@@ -1,0 +1,41 @@
+{
+  "name": "simple-timer-card",
+  "version": "1.8.0",
+  "description": "Custom simple timer integration for Home Assistant",
+  "main": "timer-card.ts",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "clean": "rd /s /q dist",
+    "deploy": "simple_timer_deploy.bat"
+  },
+  "keywords": [
+    "home-assistant",
+    "lovelace",
+    "custom-card",
+    "simple-timer",
+    "typescript"
+  ],
+  "targets": {
+    "module": {
+      "includeNodeModules": true
+    }
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup-plugin-serve": "^1.1.1",
+    "rollup": "^4.39.0",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "custom-card-helpers": "^1.9.0",
+    "home-assistant-js-websocket": "^9.4.0",
+    "lit": "^3.2.1"
+  }
+}

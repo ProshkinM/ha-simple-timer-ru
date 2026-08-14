@@ -1,0 +1,800 @@
+# config_flow.py
+"""Config flow for Simple Timer."""
+import voluptuous as vol
+import logging
+from datetime import time
+
+from homeassistant import config_entries
+from homeassistant.core import HomeAssistant, callback
+import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers import selector
+from .const import CONF_TURN_ON_OPTION, DOMAIN
+from .domains import (
+    descriptor_for,
+    needs_turn_on_option,
+    selectable_domains,
+    supports_off,
+)
+
+_LOGGER = logging.getLogger(__name__)
+
+import re
+
+def _validate_time_string(time_str: str) -> bool:
+    """Validate time string format (HH:MM or HH:MM:SS)."""
+    try:
+        # Normalize HH:MM to HH:MM:SS before parsing
+        if len(time_str) == 5:
+            time_str += ":00"
+        time.fromisoformat(time_str)
+        return True
+    except (ValueError, TypeError):
+        return False
+
+def _parse_duration_string(duration_str: str) -> tuple[float, str | None]:
+    """
+    Parse a duration string (e.g., '10', '10s', '1.5h').
+    Returns (value, unit). Unit is None if not specified (defaults to min elsewhere).
+    Raises ValueError if invalid format or violates constraints.
+    """
+    duration_str = str(duration_str).strip().lower()
+    if not duration_str:
+        return 0.0, None
+
+    # Regex allows number (positive or negative) optionally followed by unit
+    match = re.match(r"^(-?\d+(?:\.\d+)?)\s*(s|sec|seconds|m|min|minutes|h|hr|hours|d|day|days)?$", duration_str)
+    
+    if not match:
+        raise ValueError("invalid_format")
+
+    value_str = match.group(1)
+    value = float(value_str)
+    unit_str = match.group(2)
+    
+    # Normalize unit
+    if not unit_str:
+        unit = "min" # Default is minutes if no unit provided, for validation purposes
+    elif unit_str.startswith('s'):
+        unit = "s"
+    elif unit_str.startswith('d'):
+        unit = "d"
+    elif unit_str.startswith('h'):
+        unit = "h"
+    else:
+        unit = "min"
+
+    # Rule 1: Max value 9999
+    if value > 9999:
+        raise ValueError("value_exceeds_max")
+    
+    # Rule 2: Floating point checks
+    if '.' in value_str:
+        # Check decimal places
+        decimal_part = value_str.split('.')[1]
+        if len(decimal_part) > 1:
+            raise ValueError("max_one_decimal")
+            
+        # Float only allowed for hours and days
+        if unit not in ['h', 'd']:
+             raise ValueError("fraction_only_hours_days")
+
+    # Rule 3: Must be positive
+    if value < 0:
+        raise ValueError("negative_duration")
+
+    # If no unit was originally provided, return None for unit so caller knows
+    return value, (unit if unit_str else None)
+
+def _resolve_turn_on_options(entity_id: str, attrs) -> tuple[str | None, list[str]]:
+    """What to ask the user about "on" for this entity, if anything.
+
+    Returns (error_key or None, options). An empty list with no error means the
+    domain has no such question - which is every switch-like one, so those
+    users never see a new field.
+
+    The decisions themselves live in domains.py and are tested there; this only
+    turns them into form errors.
+    """
+    descriptor = descriptor_for(entity_id)
+    if descriptor.turn_on_options is None:
+        return None, []
+
+    options = descriptor.turn_on_options(attrs)
+    can_turn_off = supports_off(entity_id, attrs)
+
+    if not options and not can_turn_off:
+        # The entity advertises nothing at all - usually still starting up.
+        return "entity_not_ready", []
+    if not can_turn_off:
+        # Home Assistant does not guarantee a climate entity offers "off", and
+        # turning the device off later is the whole promise of a timer.
+        return "climate_no_off_mode", []
+    if not options:
+        return "entity_not_ready", []
+    return None, options
+
+
+def _turn_on_option_selector(options: list[str]):
+    """Dropdown over the entity's own modes. No free text, ever."""
+    return selector.SelectSelector(
+        selector.SelectSelectorConfig(
+            options=[{"value": option, "label": option.replace("_", " ").title()}
+                     for option in options],
+            mode=selector.SelectSelectorMode.DROPDOWN,
+        )
+    )
+
+
+class SimpleTimerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for Simple Timer."""
+    VERSION = 1
+
+    def __init__(self):
+        """Initialize the config flow."""
+        self._switch_entity_id = None
+        self._notification_entities = []
+        # Turn-on choices offered by the selected entity, empty for domains
+        # where "on" is not a choice at all (every switch-like one).
+        self._turn_on_options = []
+
+    def _get_notification_services(self):
+        """Get available notification services with comprehensive discovery."""
+        if not self.hass or not hasattr(self.hass, 'services'):
+            return []
+        
+        services = []
+        
+        try:
+            # Method 1: Get all notify.* services using service registry
+            notify_services = self.hass.services.async_services().get("notify", {})
+            for service_name in notify_services.keys():
+                if service_name not in ["send", "persistent_notification"]:  # Exclude base services
+                    services.append(f"notify.{service_name}")
+            
+            # Method 2: Get notification services from other domains
+            all_services = self.hass.services.async_services()
+            for domain, domain_services in all_services.items():
+                if domain != "notify":
+                    for service_name in domain_services.keys():
+                        # Look for notification-related services
+                        if (any(keyword in service_name.lower() for keyword in ["send", "message", "notify"]) or
+                            any(keyword in domain.lower() for keyword in ["telegram", "mobile_app", "discord", "slack", "pushbullet", "pushover"])):
+                            full_service = f"{domain}.{service_name}"
+                            if full_service not in services:
+                                services.append(full_service)
+            
+            # Method 3: Check for common notification integrations by entity registry
+            try:
+                from homeassistant.helpers import entity_registry as er
+                entity_registry = er.async_get(self.hass)
+                if entity_registry:
+                    # Look for mobile app entities and infer services
+                    for entity in entity_registry.entities.values():
+                        if entity.platform == "mobile_app" and entity.domain == "notify":
+                            service_name = f"notify.mobile_app_{entity.unique_id.split('_')[0]}"
+                            if service_name not in services:
+                                services.append(service_name)
+            except Exception:
+                pass  # Don't fail if entity registry access fails
+            
+        except Exception as e:
+            _LOGGER.error(f"Simple Timer: Error getting notification services: {e}")
+            return []
+        
+        # Remove duplicates and sort
+        services = list(set(services))
+        services.sort()
+        
+        _LOGGER.debug(f"Simple Timer: Found {len(services)} notification services: {services}")
+        return services
+
+    async def async_step_user(self, user_input=None):
+        """
+        First step: Select the switch entity.
+        """
+        errors = {}
+        
+        _LOGGER.info(f"Simple Timer: Starting config flow step 'user'")
+
+        if user_input is not None:
+            try:
+                # EntitySelector returns the entity_id directly as a string
+                switch_entity_id = user_input.get("switch_entity_id")
+                
+                _LOGGER.debug(f"Simple Timer: config_flow: switch_entity_id = {switch_entity_id}")
+                
+                # Validate switch entity
+                if not switch_entity_id:
+                    errors["switch_entity_id"] = "Please select an entity" # This is usually internal validation, keep strict or migrate?
+                elif not isinstance(switch_entity_id, str):
+                    errors["switch_entity_id"] = "Invalid entity format"
+                else:
+                    # Check if entity exists
+                    entity_state = self.hass.states.get(switch_entity_id)
+                    if entity_state is None:
+                        errors["switch_entity_id"] = "entity_not_found"
+                    else:
+                        options_error, options = _resolve_turn_on_options(
+                            switch_entity_id, entity_state.attributes
+                        )
+                        if options_error:
+                            errors["switch_entity_id"] = options_error
+                        else:
+                            # Store the selected entity and move to name step
+                            self._switch_entity_id = switch_entity_id
+                            self._turn_on_options = options
+                            return await self.async_step_name()
+
+
+            except Exception as e:
+                _LOGGER.error(f"Simple Timer: config_flow: Exception in step_user: {e}")
+                errors["base"] = "base"
+
+        # Check if we have any compatible entities
+        compatible_entities_exist = False
+        if self.hass:
+            for domain in selectable_domains():
+                try:
+                    domain_entities = self.hass.states.async_entity_ids(domain)
+                    if domain_entities:
+                        compatible_entities_exist = True
+                        break
+                except Exception as e:
+                    _LOGGER.warning(f"Simple Timer: config_flow: Error checking domain {domain}: {e}")
+            
+            if not compatible_entities_exist:
+                errors["base"] = "no_entities_found"
+
+        # Show entity selector
+        data_schema = vol.Schema({
+            vol.Required("switch_entity_id"): selector.EntitySelector(
+                selector.EntitySelectorConfig(
+                    domain=selectable_domains()
+                )
+            ),
+        })
+
+        _LOGGER.info(f"Simple Timer: Showing form for step 'user'")
+        return self.async_show_form(
+            step_id="user",
+            data_schema=data_schema,
+            errors=errors,
+            description_placeholders={},
+            last_step=False  # This tells HA there are more steps coming
+        )
+
+    async def async_step_name(self, user_input=None):
+        """
+        Second step: Set the name and other configuration options.
+        """
+        errors = {}
+        
+        _LOGGER.info(f"Simple Timer: Starting config flow step 'name'")
+
+        if user_input is not None:
+            try:
+                name = user_input.get("name", "").strip()
+                show_seconds = user_input.get("show_seconds", False)
+                selected_notifications = user_input.get("Select one or more notification entity (optional):", [])
+                reset_time_str = user_input.get("reset_time", "00:00")
+                default_duration_input = user_input.get("default_timer_duration", 0.0)
+                
+                # Parse duration
+                default_duration = 0.0
+                default_unit = "min" # Default
+
+                try:
+                    default_duration, parsed_unit = _parse_duration_string(default_duration_input)
+                    if parsed_unit:
+                        default_unit = parsed_unit
+                except ValueError as e:
+                    errors["default_timer_duration"] = str(e)
+
+                # Validate reset time
+                if "default_timer_duration" not in errors: # Only check if parse succeeded
+                     # Logic simplified: checks already done in _parse_duration_string
+                     pass
+
+                if not _validate_time_string(reset_time_str):
+                    errors["reset_time"] = "Invalid time format. Use HH:MM (24-hour format)"
+                    
+                if not errors:
+                    # Update notification list from multi-select (handles both add and remove)
+                    self._notification_entities = selected_notifications if selected_notifications else []
+                    _LOGGER.info(f"Simple Timer: Updated notifications to: {self._notification_entities}")
+                    
+                    # FINAL SUBMIT logic: Save everything
+                    if not name:
+                        errors["name"] = "Please enter a name"
+                    else:
+                        _LOGGER.info(f"Simple Timer: FINAL SUBMIT - Creating entry with notifications={self._notification_entities}, reset_time={reset_time_str}")
+                        entry_data = {
+                            "name": name,
+                            "switch_entity_id": self._switch_entity_id,
+                            "notification_entities": self._notification_entities,
+                            "show_seconds": show_seconds,
+                            "reset_time": reset_time_str,
+                            "default_timer_duration": default_duration,
+                            "default_timer_unit": default_unit
+                        }
+                        # Absent entirely for switch-likes, rather than stored
+                        # as None: nothing should have to read it to find out
+                        # the domain has no such concept.
+                        if self._turn_on_options:
+                            entry_data[CONF_TURN_ON_OPTION] = user_input.get(CONF_TURN_ON_OPTION)
+                        return self.async_create_entry(
+                            title=name,
+                            data=entry_data
+                        )
+                        
+            except Exception as e:
+                _LOGGER.error(f"Simple Timer: config_flow: Exception in step_name: {e}")
+                errors["base"] = "An error occurred. Please try again."
+
+        # Auto-generate name from the selected entity
+        suggested_name = ""
+        if self._switch_entity_id:
+            entity_state = self.hass.states.get(self._switch_entity_id)
+            if entity_state:
+                # Try to get friendly name first, then fall back to entity_id
+                friendly_name = entity_state.attributes.get("friendly_name")
+                if friendly_name:
+                    suggested_name = friendly_name
+                else:
+                    # Fall back to entity_id based name
+                    suggested_name = self._switch_entity_id.split(".")[-1].replace("_", " ").title()
+
+        # Get available notification services
+        available_notifications = self._get_notification_services()
+
+        # Build form schema
+        schema_dict = {
+            vol.Required("name", default=suggested_name): str,
+        }
+
+        # Only for domains where "on" is a choice. A switch user sees exactly
+        # the form they always saw.
+        if self._turn_on_options:
+            schema_dict[vol.Required(CONF_TURN_ON_OPTION,
+                                     default=self._turn_on_options[0])] = \
+                _turn_on_option_selector(self._turn_on_options)
+
+        # Add single multi-select dropdown for all notification management
+        if available_notifications:
+            notification_options = []
+            for service in available_notifications:
+                notification_options.append({"value": service, "label": service})
+            
+            schema_dict[vol.Optional("Select one or more notification entity (optional):", default=self._notification_entities)] = selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=notification_options,
+                    multiple=True,  # Multi-select for both add and remove
+                    mode=selector.SelectSelectorMode.DROPDOWN
+                )
+            )
+        
+        # Add reset time configuration
+        schema_dict[vol.Optional("reset_time", default="00:00:00")] = selector.TimeSelector()
+
+        # Default Timer Configuration
+        schema_dict[vol.Optional("default_timer_duration", default="0")] = selector.TextSelector(
+            selector.TextSelectorConfig(
+                type=selector.TextSelectorType.TEXT
+            )
+        )
+        
+        # Add show_seconds at the bottom
+        schema_dict[vol.Optional("show_seconds", default=False)] = bool
+
+        data_schema = vol.Schema(schema_dict)
+
+        # Create description with current notifications and reset time info
+        description_placeholders = {
+            "selected_entity": self._switch_entity_id,
+            "entity_name": suggested_name
+        }
+        
+        if self._notification_entities:
+            description_placeholders["current_notifications"] = ", ".join(self._notification_entities)
+        else:
+            description_placeholders["current_notifications"] = "None selected"
+
+        _LOGGER.info(f"Simple Timer: Showing form for step 'name' with {len(self._notification_entities)} notifications")
+        return self.async_show_form(
+            step_id="name",
+            data_schema=data_schema,
+            errors=errors,
+            description_placeholders=description_placeholders
+        )
+
+    async def async_step_init(self, user_input=None):
+        """Handle a flow initiated by the user."""
+        return await self.async_step_user(user_input)
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: config_entries.ConfigEntry) -> config_entries.OptionsFlow:
+        """Get the options flow for this handler."""
+        return SimpleTimerOptionsFlow(config_entry)
+
+
+class SimpleTimerOptionsFlow(config_entries.OptionsFlow):
+    """Handle options flow for Simple Timer."""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+        """Initialize options flow."""
+        self._notification_entities = list(config_entry.data.get("notification_entities", []))
+        # Everything the init form submitted, held while a second step asks
+        # what "on" means for a newly chosen device.
+        self._pending = None
+        self._pending_options = []
+
+    def _get_notification_services(self):
+        """Get available notification services with comprehensive discovery."""
+        if not self.hass or not hasattr(self.hass, 'services'):
+            return []
+        
+        services = []
+        
+        try:
+            # Method 1: Get all notify.* services using service registry
+            notify_services = self.hass.services.async_services().get("notify", {})
+            for service_name in notify_services.keys():
+                if service_name not in ["send", "persistent_notification"]:  # Exclude base services
+                    services.append(f"notify.{service_name}")
+            
+            # Method 2: Get notification services from other domains
+            all_services = self.hass.services.async_services()
+            for domain, domain_services in all_services.items():
+                if domain != "notify":
+                    for service_name in domain_services.keys():
+                        # Look for notification-related services
+                        if (any(keyword in service_name.lower() for keyword in ["send", "message", "notify"]) or
+                            any(keyword in domain.lower() for keyword in ["telegram", "mobile_app", "discord", "slack", "pushbullet", "pushover"])):
+                            full_service = f"{domain}.{service_name}"
+                            if full_service not in services:
+                                services.append(full_service)
+            
+            # Method 3: Check for common notification integrations by entity registry
+            try:
+                from homeassistant.helpers import entity_registry as er
+                entity_registry = er.async_get(self.hass)
+                if entity_registry:
+                    # Look for mobile app entities and infer services
+                    for entity in entity_registry.entities.values():
+                        if entity.platform == "mobile_app" and entity.domain == "notify":
+                            service_name = f"notify.mobile_app_{entity.unique_id.split('_')[0]}"
+                            if service_name not in services:
+                                services.append(service_name)
+            except Exception:
+                pass  # Don't fail if entity registry access fails
+            
+        except Exception as e:
+            _LOGGER.error(f"Simple Timer: Error getting notification services: {e}")
+            return []
+        
+        # Remove duplicates and sort
+        services = list(set(services))
+        services.sort()
+        
+        _LOGGER.debug(f"Simple Timer: Found {len(services)} notification services: {services}")
+        return services
+
+    async def async_step_init(self, user_input=None):
+        """Manage the options."""
+        errors = {}
+
+        # Force sync when options flow opens
+        await self._force_name_sync_on_open()
+
+        if user_input is not None:
+            try:
+                name = user_input.get("name", "").strip()
+                switch_entity_id = user_input.get("switch_entity_id")
+                show_seconds = user_input.get("show_seconds", False)
+                selected_notifications = user_input.get("Select one or more notification entity (optional):", [])
+                reset_time_str = user_input.get("reset_time", "00:00")
+                default_duration_input = user_input.get("default_timer_duration", 0.0)
+                
+                # Parse duration
+                default_duration = 0.0
+                default_unit = "min" # Default
+
+                try:
+                    default_duration, parsed_unit = _parse_duration_string(default_duration_input)
+                    if parsed_unit:
+                        default_unit = parsed_unit
+                except ValueError as e:
+                    errors["default_timer_duration"] = str(e)
+                
+                # Validate reset time
+                if "default_timer_duration" not in errors: # Only check if parse succeeded
+                    # Logic simplified: checks done in parser
+                    pass
+
+                if not _validate_time_string(reset_time_str):
+                    errors["reset_time"] = "Invalid time format. Use HH:MM (24-hour format)"
+                elif not errors:
+                    # Update notification list from multi-select (handles both add and remove)
+                    self._notification_entities = selected_notifications if selected_notifications else []
+                    _LOGGER.info(f"Simple Timer: Updated notifications to: {self._notification_entities}")
+                    
+                    # FINAL SUBMIT logic: Save everything
+                    if not name:
+                        errors["name"] = "Please enter a name"
+                    elif not switch_entity_id:
+                        errors["switch_entity_id"] = "Please select an entity"
+                    else:
+                        # Check if entity exists
+                        entity_state = self.hass.states.get(switch_entity_id)
+                        if entity_state is None:
+                            errors["switch_entity_id"] = "Entity not found"
+                        else:
+                            attrs = entity_state.attributes
+                            options_error, options = _resolve_turn_on_options(
+                                switch_entity_id, attrs
+                            )
+                            # A domain with no such question drops any stored
+                            # answer; keeping it would leave a stale hvac mode
+                            # attached to a plain switch.
+                            turn_on_option = (
+                                user_input.get(CONF_TURN_ON_OPTION) if options else None
+                            )
+
+                            if options_error:
+                                errors["switch_entity_id"] = options_error
+                            elif needs_turn_on_option(switch_entity_id, turn_on_option, attrs):
+                                # Covers a domain change AND a climate-to-climate
+                                # re-point whose modes do not include the stored
+                                # one. Ask before writing anything.
+                                self._pending = {
+                                    "name": name,
+                                    "switch_entity_id": switch_entity_id,
+                                    "show_seconds": show_seconds,
+                                    "reset_time": reset_time_str,
+                                    "default_duration": default_duration,
+                                    "default_unit": default_unit,
+                                }
+                                self._pending_options = options
+                                return await self.async_step_turn_on_option()
+                            else:
+                                _LOGGER.info(f"Simple Timer: FINAL SUBMIT - Saving with notifications={self._notification_entities}, reset_time={reset_time_str}")
+                                await self._update_config_entry(name, switch_entity_id, show_seconds, reset_time_str, default_duration, default_unit, turn_on_option)
+                                return self.async_create_entry(title="", data={})
+                        
+            except Exception as e:
+                _LOGGER.error(f"Simple Timer: options_flow: Exception: {e}")
+                errors["base"] = "An error occurred. Please try again."
+
+        # Get current values
+        current_name = self.config_entry.data.get("name") or self.config_entry.title or "Timer"
+        current_switch_entity = self.config_entry.data.get("switch_entity_id", "")
+        current_show_seconds = self.config_entry.data.get("show_seconds", False)
+        current_reset_time = self.config_entry.data.get("reset_time", "00:00")
+        current_default_duration = self.config_entry.data.get("default_timer_duration", 0.0)
+        current_default_unit = self.config_entry.data.get("default_timer_unit", "min")
+        
+        # Format current duration for display
+        # Reconstruct "1.5h" or "10" (no unit if min)
+        if current_default_duration == int(current_default_duration):
+             val_str = str(int(current_default_duration))
+        else:
+             val_str = str(current_default_duration)
+             
+        # Append unit if not minutes, or if user prefers explicit units? 
+        # Card logic implies "10" is minutes. "10s" is seconds. 
+        # So: if unit is min, just show number. If unit is other, append it.
+        if current_default_unit != "min":
+             val_str += current_default_unit
+             
+        display_default_duration = val_str
+
+        # Validate current switch entity
+        current_switch_exists = True
+        if current_switch_entity:
+            entity_state = self.hass.states.get(current_switch_entity)
+            if entity_state is None:
+                current_switch_exists = False
+                errors["switch_entity_id"] = f"Current entity '{current_switch_entity}' not found. Please select a new one."
+
+        # Get available notification services
+        available_notifications = self._get_notification_services()
+
+        # Build form schema
+        schema_dict = {
+            vol.Required("name", default=current_name): str,
+            vol.Required("switch_entity_id", default=current_switch_entity if current_switch_exists else ""): selector.EntitySelector(
+                selector.EntitySelectorConfig(
+                    domain=selectable_domains()
+                )
+            ),
+        }
+
+        # If the device already has a turn-on choice, offer it here so changing
+        # only the mode is one screen. Re-pointing at a device whose modes do
+        # not include the answer falls through to the second step instead.
+        current_state = self.hass.states.get(current_switch_entity) if current_switch_entity else None
+        _, current_options = _resolve_turn_on_options(
+            current_switch_entity, current_state.attributes if current_state else None
+        )
+        if current_options:
+            stored_option = self.config_entry.data.get(CONF_TURN_ON_OPTION)
+            schema_dict[vol.Required(
+                CONF_TURN_ON_OPTION,
+                default=stored_option if stored_option in current_options else current_options[0],
+            )] = _turn_on_option_selector(current_options)
+
+
+        # Add single multi-select dropdown for all notification management
+        if available_notifications:
+            notification_options = []
+            for service in available_notifications:
+                notification_options.append({"value": service, "label": service})
+            
+            schema_dict[vol.Optional("Select one or more notification entity (optional):", default=self._notification_entities)] = selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=notification_options,
+                    multiple=True,  # Multi-select for both add and remove
+                    mode=selector.SelectSelectorMode.DROPDOWN
+                )
+            )
+        
+        # Add reset time configuration
+        schema_dict[vol.Optional("reset_time", default=current_reset_time)] = selector.TimeSelector()
+        
+        # Default Timer Configuration (Single Field)
+        schema_dict[vol.Optional("default_timer_duration", default=display_default_duration)] = selector.TextSelector(
+            selector.TextSelectorConfig(
+                type=selector.TextSelectorType.TEXT
+            )
+        )
+        
+        # Add show_seconds at the bottom
+        schema_dict[vol.Optional("show_seconds", default=current_show_seconds)] = bool
+
+        data_schema = vol.Schema(schema_dict)
+
+        # Add migration notice if old card settings might exist
+        description_placeholders = {
+            "migration_notice": ""
+        }
+        
+        if self._notification_entities:
+            description_placeholders["current_notifications"] = ", ".join(self._notification_entities)
+        else:
+            description_placeholders["current_notifications"] = "None selected"
+            description_placeholders["migration_notice"] = "Note: Notification and display settings have been moved from individual cards to the integration configuration. Please configure them here."
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=data_schema,
+            errors=errors,
+            description_placeholders=description_placeholders
+        )
+
+    async def async_step_turn_on_option(self, user_input=None):
+        """Ask what "on" means for a newly chosen device.
+
+        Reached only when the init form's answer cannot apply to the entity the
+        user just picked. Everything is written in ONE async_update_entry from
+        here, so the sensor's update listener never observes a climate entity
+        carrying a stale or missing mode.
+        """
+        if user_input is not None:
+            pending = self._pending or {}
+            await self._update_config_entry(
+                pending.get("name"),
+                pending.get("switch_entity_id"),
+                pending.get("show_seconds"),
+                pending.get("reset_time"),
+                pending.get("default_duration"),
+                pending.get("default_unit"),
+                user_input.get(CONF_TURN_ON_OPTION),
+            )
+            return self.async_create_entry(title="", data={})
+
+        return self.async_show_form(
+            step_id="turn_on_option",
+            data_schema=vol.Schema({
+                vol.Required(CONF_TURN_ON_OPTION,
+                             default=self._pending_options[0]):
+                    _turn_on_option_selector(self._pending_options),
+            }),
+            description_placeholders={
+                "device": (self._pending or {}).get("switch_entity_id", "")
+            },
+        )
+
+    async def _force_name_sync_on_open(self):
+        """Force name sync when options flow opens."""
+        current_title = self.config_entry.title
+        current_data_name = self.config_entry.data.get("name")
+        
+        _LOGGER.info(f"Simple Timer: Options flow opened - title: '{current_title}', data_name: '{current_data_name}'")
+        
+        # If they differ, sync them
+        if current_title and current_data_name != current_title:
+            _LOGGER.info(f"Simple Timer: FORCE SYNCING '{current_title}' to entry.data['name']")
+            
+            # Update entry data
+            new_data = dict(self.config_entry.data)
+            new_data["name"] = current_title
+            
+            self.hass.config_entries.async_update_entry(
+                self.config_entry,
+                data=new_data
+            )
+
+    async def _update_config_entry(self, name: str, switch_entity_id: str, show_seconds: bool, reset_time: str, default_duration: float, default_unit: str, turn_on_option: str | None = None):
+        """Update config entry and force immediate sensor sync.
+
+        ONE write, deliberately. The update listener runs on it and re-points
+        the sensor, so the entity and the mode it is commanded with must land
+        together - a second write would leave a window where the sensor watches
+        a climate device with the previous device's mode.
+        """
+        new_data = {
+            "name": name,
+            "switch_entity_id": switch_entity_id,
+            "notification_entities": self._notification_entities,
+            "show_seconds": show_seconds,
+            "reset_time": reset_time,
+            "default_timer_duration": default_duration,
+            "default_timer_unit": default_unit
+        }
+        # Omitted, not set to None, when the new device has no such choice -
+        # which is also how a leftover mode gets dropped on a switch re-point.
+        if turn_on_option:
+            new_data[CONF_TURN_ON_OPTION] = turn_on_option
+
+
+        _LOGGER.info(f"Simple Timer: Updating entry {self.config_entry.entry_id} with name='{name}', switch='{switch_entity_id}', notifications={self._notification_entities}, show_seconds={show_seconds}, reset_time={reset_time}")
+        
+        # Update both data and title
+        self.hass.config_entries.async_update_entry(
+            self.config_entry,
+            data=new_data,
+            title=name
+        )
+        
+        # Force immediate sensor update
+        await self._force_sensor_update()
+
+    async def _force_sensor_update(self):
+        """Force immediate sensor update with multiple methods."""
+        try:
+            if DOMAIN in self.hass.data and self.config_entry.entry_id in self.hass.data[DOMAIN]:
+                sensor_data = self.hass.data[DOMAIN][self.config_entry.entry_id]
+                if "sensor" in sensor_data and sensor_data["sensor"]:
+                    sensor = sensor_data["sensor"]
+                    
+                    # Method 1: Update tracking variables
+                    sensor._last_known_title = self.config_entry.title
+                    sensor._last_known_data_name = self.config_entry.data.get("name")
+                    
+                    # Method 2: Force name change handler
+                    await sensor._handle_name_change()
+                    
+                    # Method 3: Force reset time update
+                    await sensor._update_reset_time()
+
+                    # Method 4: Force default timer config update
+                    await sensor._update_default_timer_config()
+                    
+                    # Method 5: Force state write
+                    sensor.async_write_ha_state()
+                    
+                    # Method 6: Force entity registry update
+                    from homeassistant.helpers import entity_registry as er
+                    entity_registry = er.async_get(self.hass)
+                    if entity_registry:
+                        entity_registry.async_update_entity(
+                            sensor.entity_id,
+                            name=sensor.name
+                        )
+                    
+                    _LOGGER.info(f"Simple Timer: FORCED complete sensor update - new name: '{sensor.name}', reset_time: '{self.config_entry.data.get('reset_time')}'")
+                else:
+                    _LOGGER.warning(f"Simple Timer: Sensor not found in hass.data for entry {self.config_entry.entry_id}")
+        except Exception as e:
+            _LOGGER.error(f"Simple Timer: Failed to force sensor update: {e}")

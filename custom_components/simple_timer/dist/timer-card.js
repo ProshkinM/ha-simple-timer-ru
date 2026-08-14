@@ -1,0 +1,1432 @@
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+const t=globalThis,e=t.ShadowRoot&&(void 0===t.ShadyCSS||t.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,i=Symbol(),o=new WeakMap;let s=class{constructor(t,e,o){if(this._$cssResult$=!0,o!==i)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const i=this.t;if(e&&void 0===t){const e=void 0!==i&&1===i.length;e&&(t=o.get(i)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&o.set(i,t))}return t}toString(){return this.cssText}};const n=(t,...e)=>{const o=1===t.length?t[0]:e.reduce((e,i,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[o+1],t[0]);return new s(o,t,i)},r=e?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new s("string"==typeof t?t:t+"",void 0,i))(e)})(t):t,{is:a,defineProperty:l,getOwnPropertyDescriptor:c,getOwnPropertyNames:d,getOwnPropertySymbols:h,getPrototypeOf:u}=Object,p=globalThis,_=p.trustedTypes,g=_?_.emptyScript:"",m=p.reactiveElementPolyfillSupport,v=(t,e)=>t,f={toAttribute(t,e){switch(e){case Boolean:t=t?g:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},b=(t,e)=>!a(t,e),y={attribute:!0,type:String,converter:f,reflect:!1,useDefault:!1,hasChanged:b};
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */Symbol.metadata??=Symbol("metadata"),p.litPropertyMetadata??=new WeakMap;let x=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=y){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(t,i,e);void 0!==o&&l(this.prototype,t,o)}}static getPropertyDescriptor(t,e,i){const{get:o,set:s}=c(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:o,set(e){const n=o?.call(this);s?.call(this,e),this.requestUpdate(t,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??y}static _$Ei(){if(this.hasOwnProperty(v("elementProperties")))return;const t=u(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(v("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(v("properties"))){const t=this.properties,e=[...d(t),...h(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(r(t))}else void 0!==t&&e.push(r(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const i=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((i,o)=>{if(e)i.adoptedStyleSheets=o.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const e of o){const o=document.createElement("style"),s=t.litNonce;void 0!==s&&o.setAttribute("nonce",s),o.textContent=e.cssText,i.appendChild(o)}})(i,this.constructor.elementStyles),i}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),o=this.constructor._$Eu(t,i);if(void 0!==o&&!0===i.reflect){const s=(void 0!==i.converter?.toAttribute?i.converter:f).toAttribute(e,i.type);this._$Em=t,null==s?this.removeAttribute(o):this.setAttribute(o,s),this._$Em=null}}_$AK(t,e){const i=this.constructor,o=i._$Eh.get(t);if(void 0!==o&&this._$Em!==o){const t=i.getPropertyOptions(o),s="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:f;this._$Em=o;const n=s.fromAttribute(e,t.type);this[o]=n??this._$Ej?.get(o)??n,this._$Em=null}}requestUpdate(t,e,i,o=!1,s){if(void 0!==t){const n=this.constructor;if(!1===o&&(s=this[t]),i??=n.getPropertyOptions(t),!((i.hasChanged??b)(s,e)||i.useDefault&&i.reflect&&s===this._$Ej?.get(t)&&!this.hasAttribute(n._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:o,wrapped:s},n){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,n??e??this[t]),!0!==s||void 0!==n)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===o&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,o=this[e];!0!==t||this._$AL.has(e)||void 0===o||this.C(e,void 0,i,o)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};x.elementStyles=[],x.shadowRootOptions={mode:"open"},x[v("elementProperties")]=new Map,x[v("finalized")]=new Map,m?.({ReactiveElement:x}),(p.reactiveElementVersions??=[]).push("2.1.2");
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{createHTML:t=>t}):void 0,k="$lit$",T=`lit$${Math.random().toFixed(9).slice(2)}$`,E="?"+T,A=`<${E}>`,P=document,I=()=>P.createComment(""),M=t=>null===t||"object"!=typeof t&&"function"!=typeof t,D=Array.isArray,L="[ \t\n\f\r]",O=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,U=/-->/g,V=/>/g,B=RegExp(`>|${L}(?:([^\\s"'>=/]+)(${L}*=${L}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),R=/'/g,j=/"/g,N=/^(?:script|style|textarea|title)$/i,H=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),z=Symbol.for("lit-noChange"),W=Symbol.for("lit-nothing"),F=new WeakMap,q=P.createTreeWalker(P,129);function J(t,e){if(!D(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==C?C.createHTML(e):e}const K=(t,e)=>{const i=t.length-1,o=[];let s,n=2===e?"<svg>":3===e?"<math>":"",r=O;for(let e=0;e<i;e++){const i=t[e];let a,l,c=-1,d=0;for(;d<i.length&&(r.lastIndex=d,l=r.exec(i),null!==l);)d=r.lastIndex,r===O?"!--"===l[1]?r=U:void 0!==l[1]?r=V:void 0!==l[2]?(N.test(l[2])&&(s=RegExp("</"+l[2],"g")),r=B):void 0!==l[3]&&(r=B):r===B?">"===l[0]?(r=s??O,c=-1):void 0===l[1]?c=-2:(c=r.lastIndex-l[2].length,a=l[1],r=void 0===l[3]?B:'"'===l[3]?j:R):r===j||r===R?r=B:r===U||r===V?r=O:(r=B,s=void 0);const h=r===B&&t[e+1].startsWith("/>")?" ":"";n+=r===O?i+A:c>=0?(o.push(a),i.slice(0,c)+k+i.slice(c)+T+h):i+T+(-2===c?e:h)}return[J(t,n+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class G{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let s=0,n=0;const r=t.length-1,a=this.parts,[l,c]=K(t,e);if(this.el=G.createElement(l,i),q.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=q.nextNode())&&a.length<r;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(k)){const e=c[n++],i=o.getAttribute(t).split(T),r=/([.?@])?(.*)/.exec(e);a.push({type:1,index:s,name:r[2],strings:i,ctor:"."===r[1]?tt:"?"===r[1]?et:"@"===r[1]?it:Q}),o.removeAttribute(t)}else t.startsWith(T)&&(a.push({type:6,index:s}),o.removeAttribute(t));if(N.test(o.tagName)){const t=o.textContent.split(T),e=t.length-1;if(e>0){o.textContent=S?S.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],I()),q.nextNode(),a.push({type:2,index:++s});o.append(t[e],I())}}}else if(8===o.nodeType)if(o.data===E)a.push({type:2,index:s});else{let t=-1;for(;-1!==(t=o.data.indexOf(T,t+1));)a.push({type:7,index:s}),t+=T.length-1}s++}}static createElement(t,e){const i=P.createElement("template");return i.innerHTML=t,i}}function X(t,e,i=t,o){if(e===z)return e;let s=void 0!==o?i._$Co?.[o]:i._$Cl;const n=M(e)?void 0:e._$litDirective$;return s?.constructor!==n&&(s?._$AO?.(!1),void 0===n?s=void 0:(s=new n(t),s._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=s:i._$Cl=s),void 0!==s&&(e=X(t,s._$AS(t,e.values),s,o)),e}class Y{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??P).importNode(e,!0);q.currentNode=o;let s=q.nextNode(),n=0,r=0,a=i[0];for(;void 0!==a;){if(n===a.index){let e;2===a.type?e=new Z(s,s.nextSibling,this,t):1===a.type?e=new a.ctor(s,a.name,a.strings,this,t):6===a.type&&(e=new ot(s,this,t)),this._$AV.push(e),a=i[++r]}n!==a?.index&&(s=q.nextNode(),n++)}return q.currentNode=P,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class Z{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=W,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=X(this,t,e),M(t)?t===W||null==t||""===t?(this._$AH!==W&&this._$AR(),this._$AH=W):t!==this._$AH&&t!==z&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>D(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==W&&M(this._$AH)?this._$AA.nextSibling.data=t:this.T(P.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=G.createElement(J(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new Y(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=F.get(t.strings);return void 0===e&&F.set(t.strings,e=new G(t)),e}k(t){D(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const s of t)o===e.length?e.push(i=new Z(this.O(I()),this.O(I()),this,this.options)):i=e[o],i._$AI(s),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=$(t).nextSibling;$(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Q{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,s){this.type=1,this._$AH=W,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=s,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=W}_$AI(t,e=this,i,o){const s=this.strings;let n=!1;if(void 0===s)t=X(this,t,e,0),n=!M(t)||t!==this._$AH&&t!==z,n&&(this._$AH=t);else{const o=t;let r,a;for(t=s[0],r=0;r<s.length-1;r++)a=X(this,o[i+r],e,r),a===z&&(a=this._$AH[r]),n||=!M(a)||a!==this._$AH[r],a===W?t=W:t!==W&&(t+=(a??"")+s[r+1]),this._$AH[r]=a}n&&!o&&this.j(t)}j(t){t===W?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Q{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===W?void 0:t}}class et extends Q{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==W)}}class it extends Q{constructor(t,e,i,o,s){super(t,e,i,o,s),this.type=5}_$AI(t,e=this){if((t=X(this,t,e,0)??W)===z)return;const i=this._$AH,o=t===W&&i!==W||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,s=t!==W&&(i===W||o);o&&this.element.removeEventListener(this.name,this,i),s&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){X(this,t)}}const st=w.litHtmlPolyfillSupport;st?.(G,Z),(w.litHtmlVersions??=[]).push("3.3.3");const nt=globalThis;
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */class rt extends x{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let s=o._$litPart$;if(void 0===s){const t=i?.renderBefore??null;o._$litPart$=s=new Z(e.insertBefore(I(),t),t,void 0,i??{})}return s._$AI(t),s})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return z}}rt._$litElement$=!0,rt.finalized=!0,nt.litElementHydrateSupport?.({LitElement:rt});const at=nt.litElementPolyfillSupport;at?.({LitElement:rt}),(nt.litElementVersions??=[]).push("4.2.2");const lt=n`
+  :host {
+    display: block;
+  }
+
+  ha-card {
+    padding: 0;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    padding: 0px;
+    color: var(--primary-text-color);
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 0px;
+  }
+
+  .card-header.has-title {
+      margin-bottom: -15px;
+  }
+    
+  .card-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 1.7rem;
+    color: rgba(160,160,160,0.7);
+    text-align: left;
+    margin: 0;
+    padding: 0 8px;
+  }
+
+  .placeholder { 
+    padding: 16px; 
+    background-color: var(--secondary-background-color); 
+  }
+    
+  .warning { 
+    padding: 16px; 
+    color: white; 
+    background-color: var(--error-color); 
+  }
+
+  /* New layout styles */
+  .card-content {
+    padding: 12px !important;
+    padding-top: 0px !important;
+    margin: 0 !important;
+  }
+
+  .countdown-section {
+    text-align: center;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .countdown-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1.8rem, 10vw, 3.5rem);
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    padding: 4px 44px;
+    min-height: 3.5rem;
+    box-sizing: border-box;
+  }
+    
+  .countdown-display.active {
+    color: var(--primary-color);
+  }
+
+  .countdown-display.active.reverse {
+    color: #f2ba5a;
+  }
+
+  /* Block-style progress bar under the countdown */
+  .block-progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    max-width: 280px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    margin: 2px auto 0;
+  }
+
+  /* Progress-bar-only mode: the countdown's min-height is gone, so reserve the
+     vertical room the absolutely positioned power button still needs. */
+  .block-progress-bar.solo {
+    min-height: 3.5rem;
+    /* Reserved height sits above the bar, not split around it, so the gap to
+       the daily usage line stays tight. */
+    align-items: flex-end;
+  }
+
+  /* .daily-usage-display carries a negative top margin to hug the countdown.
+     When the progress bar sits between them, cancel it so they don't overlap. */
+  .block-progress-bar + .daily-usage-display {
+    margin-top: 6px;
+  }
+
+  .progress-block {
+    position: relative; /* lets the lead block's glow sit above its neighbours */
+    flex: 1 1 0;
+    min-width: 0;
+    height: 18px;
+    border-radius: 4px;
+    background-color: var(--divider-color, rgba(160, 160, 160, 0.25));
+    opacity: 0.55;
+    transition: background-color 0.4s linear, opacity 0.4s linear;
+  }
+
+  .progress-block.active {
+    background-color: var(--primary-color);
+    opacity: 1;
+  }
+
+  .block-progress-bar.reverse .progress-block.active {
+    background-color: #f2ba5a;
+  }
+
+  /* Same glow recipe as .entity-state-button.on: a single translucent shadow
+     whose radius and alpha pulse together. Opaque stacked shadows saturate and
+     the pulse becomes invisible. */
+  .progress-block.lead {
+    z-index: 1;
+    box-shadow: 0 0 15px rgba(var(--rgb-primary-color), 0.6);
+    animation: pulse-lead 2s infinite;
+  }
+
+  .block-progress-bar.reverse .progress-block.lead {
+    box-shadow: 0 0 15px rgba(242, 186, 90, 0.6);
+    animation: pulse-lead-reverse 2s infinite;
+  }
+
+  @keyframes pulse-lead {
+    0%, 100% { box-shadow: 0 0 3px rgba(var(--rgb-primary-color), 0.25); }
+    50% {
+      box-shadow:
+        0 0 12px rgba(var(--rgb-primary-color), 1),
+        0 0 28px rgba(var(--rgb-primary-color), 0.55);
+    }
+  }
+
+  @keyframes pulse-lead-reverse {
+    0%, 100% { box-shadow: 0 0 3px rgba(242, 186, 90, 0.25); }
+    50% {
+      box-shadow:
+        0 0 12px rgba(242, 186, 90, 1),
+        0 0 28px rgba(242, 186, 90, 0.55);
+    }
+  }
+
+  .daily-usage-display {
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+    text-align: center;
+    margin-top: -8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .slider-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 8px; /* Extra internal padding if needed, or rely on card padding */
+    gap: 12px;
+  }
+
+  .slider-right-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* Reserve space so slider doesn't jump when label grows */
+    min-width: 135px; 
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .timer-slider {
+    flex: 1; /* Fills remaining space */
+    width: auto; /* Allow flex to control width */
+    min-width: 100px; /* Don't shrink too small on tiny screens */
+    height: 16px;
+    margin: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--secondary-background-color);
+    border-radius: 20px;
+    outline: none;
+  }
+
+  .timer-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #2ab69c;
+    cursor: pointer;
+    border: 2px solid #4bd9bf;
+    box-shadow: 
+      0 0 0 2px rgba(75, 217, 191, 0.3),
+      0 0 8px rgba(42, 182, 156, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .timer-slider::-webkit-slider-thumb:hover {
+    background: #239584;
+    border: 2px solid #4bd9bf;
+    box-shadow: 
+      0 0 0 3px rgba(75, 217, 191, 0.4),
+      0 0 12px rgba(42, 182, 156, 0.6),
+      0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+  }
+
+  .timer-slider::-webkit-slider-thumb:active {
+    background: #1e7e6f;
+    border: 2px solid #4bd9bf;
+    box-shadow: 
+      0 0 0 4px rgba(75, 217, 191, 0.5),
+      0 0 16px rgba(42, 182, 156, 0.7),
+      0 2px 8px rgba(0, 0, 0, 0.4);
+    transform: scale(0.98);
+  }
+
+  .timer-slider::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #2ab69c;
+    cursor: pointer;
+    border: 2px solid #4bd9bf;
+    box-shadow: 
+      0 0 0 2px rgba(75, 217, 191, 0.3),
+      0 0 8px rgba(42, 182, 156, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .timer-slider::-moz-range-thumb:hover {
+    background: #239584;
+    border: 2px solid #4bd9bf;
+    box-shadow: 
+      0 0 0 3px rgba(75, 217, 191, 0.4),
+      0 0 12px rgba(42, 182, 156, 0.6),
+      0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+  }
+
+  .timer-slider::-moz-range-thumb:active {
+    background: #1e7e6f;
+    border: 2px solid #4bd9bf;
+    box-shadow: 
+      0 0 0 4px rgba(75, 217, 191, 0.5),
+      0 0 16px rgba(42, 182, 156, 0.7),
+      0 2px 8px rgba(0, 0, 0, 0.4);
+    transform: scale(0.98);
+  }
+
+  .slider-label {
+    font-size: 1.1em;
+    font-weight: 400;
+    color: var(--primary-text-color);
+    white-space: nowrap;
+    margin-left: 0px;
+    margin-right: 10px;
+    min-width: 75px; 
+    text-align: center;
+  }
+
+  .timer-control-button {
+      width: 50px;
+      height: 38px;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s, opacity 0.2s;
+      position: relative;     
+      background-color: var(--secondary-background-color);
+      border: none;
+      box-shadow: none;
+      
+      color: var(--primary-color);
+      --mdc-icon-size: 24px;
+      padding: 0;
+      margin-right: 10px; /* Add some spacing from the text */
+  }
+
+  .timer-control-button ha-icon[icon] {
+      color: var(--primary-color);
+  }
+
+  .timer-control-button.reverse ha-icon[icon] {
+      color: #f2ba5a;
+  }
+
+
+
+  .timer-control-button:hover {
+      transform: none;
+      box-shadow: 0 0 8px rgba(42, 182, 156, 1);
+      color: var(--primary-color);
+  }
+
+  .timer-control-button:active {
+      transform: none;
+      box-shadow: 0 0 12px rgba(42, 182, 156, 0.6);
+  }
+
+  .timer-control-button.active {
+      color: var(--primary-color);
+  }
+
+
+
+  @keyframes pulse {
+      0%, 100% { box-shadow: 
+          0 0 0 2px rgba(42, 137, 209, 0.3),
+          0 0 12px rgba(42, 137, 209, 0.6); }
+      50% { box-shadow: 
+          0 0 0 4px rgba(42, 137, 209, 0.5),
+          0 0 20px rgba(42, 137, 209, 0.8); }
+  }
+
+  .timer-control-button.active.reverse {
+      color: #f2ba5a;
+  }
+
+  .timer-control-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  .timer-control-button.disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  @keyframes pulse-orange {
+      0%, 100% { box-shadow: 
+          0 0 0 2px rgba(242, 186, 90, 0.3),
+          0 0 12px rgba(242, 186, 90, 0.6); }
+      50% { box-shadow: 
+          0 0 0 4px rgba(242, 186, 90, 0.5),
+          0 0 20px rgba(242, 186, 90, 0.8); }
+  }
+
+  .button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding-bottom: 24px;
+    margin-top: 0px;
+  }
+
+  .timer-button {
+    width: 80px;
+    height: 38px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    text-align: center;
+    background-color: var(--secondary-background-color);
+    color: var(--primary-text-color);
+  }
+
+  .timer-button:hover {
+    box-shadow: 0 0 8px rgba(42, 182, 156, 1);
+  }
+
+  .timer-button.active {
+    color: white;
+    box-shadow: 0 0 8px rgba(42, 182, 156, 1);
+  }
+
+  .timer-button.active:hover {
+    box-shadow: 0 0 12px rgba(42, 182, 156, 0.6);
+  }
+
+  .timer-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .timer-button.disabled:hover {
+    box-shadow: none;
+    opacity: 0.5;
+  }
+
+  .timer-button.stop-button.active,
+  .timer-button.stop-button.active:hover {
+    box-shadow: none;
+    border: none;
+  }
+
+  .timer-button-value {
+    font-size: 1.1em;
+    font-weight: 400;
+    line-height: 38px;
+  }
+
+  .timer-button-unit {
+    font-size: 0.9em;
+    font-weight: 400;
+    margin-top: 0px;
+    line-height: 38px;
+  }
+
+  .status-message {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 0 0 12px 0;
+    border-radius: 8px;
+    border: 1px solid var(--warning-color);
+    background-color: rgba(var(--rgb-warning-color), 0.1);
+  }
+
+  .status-icon {
+    color: var(--warning-color);
+    margin-right: 8px;
+  }
+
+  .status-text {
+    font-size: 14px;
+    color: var(--primary-text-color);
+  }
+
+  .watchdog-banner {
+    margin: 35px 0 12px 0;
+    padding-right: 50px;
+    border-radius: 0;
+  }
+
+  /* Push banner down further if there is no title to clear the power button */
+  .card-header:not(.has-title) + .watchdog-banner {
+    margin-top: 60px;
+  }
+
+  .entity-state-button {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--secondary-text-color);
+    transition: all 0.3s ease;
+    z-index: 5;
+    /* No border or shadow in default state */
+  }
+
+  .entity-state-button ha-icon {
+    --mdc-icon-size: 30px;
+    color: var(--secondary-text-color);
+  }
+
+  .entity-state-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: scale(1.1);
+  }
+
+  .entity-state-button:active {
+    transform: scale(0.95);
+  }
+
+  .entity-state-button.on {
+    color: var(--primary-color);
+    /* Circular glow effect */
+    box-shadow: 0 0 15px var(--primary-color);
+    background-color: rgba(var(--rgb-primary-color), 0.1);
+    animation: glow-pulse 2s infinite;
+  }
+  
+  .entity-state-button.on ha-icon {
+    color: var(--primary-color);
+  }
+
+  @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(var(--rgb-primary-color), 0.6); }
+      50% { box-shadow: 0 0 25px rgba(var(--rgb-primary-color), 0.9); }
+  }
+
+  .entity-state-button.on.reverse {
+    color: #f2ba5a;
+    box-shadow: 0 0 15px #f2ba5a;
+    background-color: rgba(242, 186, 90, 0.1);
+    animation: glow-pulse-orange 2s infinite;
+  }
+  
+  .entity-state-button.on.reverse ha-icon {
+      color: #f2ba5a;
+  }
+
+  @keyframes glow-pulse-orange {
+      0%, 100% { box-shadow: 0 0 15px rgba(242, 186, 90, 0.6); }
+      50% { box-shadow: 0 0 25px rgba(242, 186, 90, 0.9); }
+  }
+
+  /* ---- Schedule panel ---- */
+  .schedule-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 14px 16px 4px;
+    padding-top: 12px;
+    border-top: 1px solid var(--divider-color, rgba(255,255,255,0.12));
+    font-size: 13px;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .schedule-toggle span { flex: 0 1 auto; overflow: visible; }
+  .schedule-toggle ha-icon:first-child { color: var(--primary-color); --mdc-icon-size: 18px; }
+  .schedule-toggle .sched-chevron { --mdc-icon-size: 18px; }
+
+  .schedule-panel {
+    margin: 14px 16px 8px;
+    padding-top: 4px;
+  }
+  .schedule-panel .schedule-toggle {
+    margin: 0 0 12px;
+    padding-top: 12px;
+  }
+
+  .sched-field { margin-bottom: 14px; }
+  .sched-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--secondary-text-color);
+    margin-bottom: 6px;
+  }
+  .sched-time, .sched-num, .sched-unit {
+    background: var(--secondary-background-color, rgba(255,255,255,0.05));
+    color: var(--primary-text-color);
+    border: 1px solid var(--divider-color, rgba(255,255,255,0.12));
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 15px;
+    font-family: inherit;
+  }
+  .sched-time { width: 120px; }
+  .sched-dur-row { display: flex; gap: 8px; }
+  .sched-num { width: 90px; }
+  .sched-unit { cursor: pointer; }
+
+  .sched-shortcut-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--secondary-text-color);
+    opacity: 0.7;
+    margin: 10px 0 6px;
+  }
+  .sched-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .sched-pill {
+    width: 72px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 12px;
+    padding: 8px 6px;
+    border-radius: 8px;
+    background: var(--secondary-background-color, rgba(255,255,255,0.05));
+    border: 1px solid var(--divider-color, rgba(255,255,255,0.12));
+    color: var(--primary-text-color);
+    cursor: pointer;
+  }
+  .sched-pill.selected {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(var(--rgb-primary-color), 0.14);
+  }
+
+  .sched-repeat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0 12px;
+    font-size: 14px;
+    color: var(--primary-text-color);
+  }
+
+  .sched-days { display: flex; gap: 6px; margin-bottom: 14px; }
+  .sched-day {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    padding: 7px 0;
+    border-radius: 7px;
+    background: var(--secondary-background-color, rgba(255,255,255,0.05));
+    border: 1px solid var(--divider-color, rgba(255,255,255,0.12));
+    color: var(--secondary-text-color);
+    cursor: pointer;
+  }
+  .sched-day.on {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(var(--rgb-primary-color), 0.14);
+  }
+
+  .sched-actions { display: flex; gap: 10px; }
+  .sched-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    padding: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .sched-btn.primary {
+    background: var(--primary-color);
+    color: var(--text-primary-color, #fff);
+    font-weight: 600;
+  }
+  .sched-btn.ghost {
+    background: transparent;
+    border: 1px solid var(--divider-color, rgba(255,255,255,0.12));
+    color: var(--secondary-text-color);
+  }
+
+  .schedule-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 16px 8px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    background: rgba(var(--rgb-primary-color), 0.10);
+    border: 1px solid rgba(var(--rgb-primary-color), 0.4);
+  }
+  .schedule-banner .sched-ico { color: var(--primary-color); --mdc-icon-size: 20px; }
+  .sched-banner-text { flex: 1; line-height: 1.4; }
+  .sched-banner-main { font-size: 13.5px; color: var(--primary-text-color); }
+  .sched-banner-sub { font-size: 12px; color: var(--secondary-text-color); }
+  .sched-banner-x { cursor: pointer; color: var(--secondary-text-color); --mdc-icon-size: 18px; padding: 2px; }
+
+  `,ct="simple_timer",dt=[15,30,60,90,120,150];console.info("%c SIMPLE-TIMER-CARD %c v1.8.0 ","color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray");class ht extends rt{constructor(){super(...arguments),this._countdownInterval=null,this._liveRuntimeSeconds=0,this._timeRemaining=null,this._remainingSeconds=0,this._sliderValue=0,this.buttons=[],this._validationMessages=[],this._notificationSentForCurrentCycle=!1,this._entitiesLoaded=!1,this._serverTimeOffset=0,this._lastSyncedUpdate=null,this._effectiveSwitchEntity=null,this._effectiveSensorEntity=null,this._longPressTimer=null,this._isLongPress=!1,this._touchStartPosition=null,this._isCancelling=!1,this._countdownLongPressTimer=null,this._countdownTouchStartPosition=null,this._scheduleExpanded=!1,this._scheduleTime="21:30",this._scheduleDuration=30,this._scheduleUnit="min",this._scheduleRepeat=!1,this._scheduleDays=[]}static get properties(){return{hass:{type:Object},_config:{type:Object},_timeRemaining:{state:!0},_remainingSeconds:{state:!0},_sliderValue:{state:!0},_entitiesLoaded:{state:!0},_effectiveSwitchEntity:{state:!0},_effectiveSensorEntity:{state:!0},_validationMessages:{state:!0},_scheduleExpanded:{state:!0},_scheduleTime:{state:!0},_scheduleDuration:{state:!0},_scheduleUnit:{state:!0},_scheduleRepeat:{state:!0},_scheduleDays:{state:!0}}}static async getConfigElement(){return await Promise.resolve().then(function(){return vt}),document.createElement("timer-card-editor")}static getStubConfig(t){return console.log("TimerCard: Generating stub config - NO auto-selection will be performed"),{type:"custom:timer-card",timer_instance_id:null,timer_buttons:[...dt],card_title:"Simple Timer",power_button_icon:"mdi:power",countdown_display:"countdown",hide_slider:!1,slider_thumb_color:null,slider_background_color:null,power_button_background_color:null,power_button_icon_color:null}}setConfig(t){const e=t.slider_max&&t.slider_max>0&&t.slider_max<=9999?t.slider_max:120,i=t.timer_instance_id||"default";this.buttons=this._getValidatedTimerButtons(t.timer_buttons),this._config=Object.assign(Object.assign({},t),{type:t.type||"custom:timer-card",timer_buttons:t.timer_buttons||[...dt],card_title:t.card_title||null,entity_state_icon:t.entity_state_icon||null,power_button_icon:t.power_button_icon||null,slider_max:e,slider_unit:t.slider_unit||"min",reverse_mode:t.reverse_mode||!1,hide_slider:t.hide_slider||!1,show_daily_usage:!1!==t.show_daily_usage,countdown_display:t.countdown_display||"countdown",timer_instance_id:i,entity:t.entity,sensor_entity:t.sensor_entity,slider_thumb_color:t.slider_thumb_color||null,slider_background_color:t.slider_background_color||null,timer_button_font_color:t.timer_button_font_color||null,timer_button_background_color:t.timer_button_background_color||null,power_button_background_color:t.power_button_background_color||null,power_button_icon_color:t.power_button_icon_color||null,entity_state_button_background_color:t.entity_state_button_background_color||null,entity_state_button_icon_color:t.entity_state_button_icon_color||null,entity_state_button_background_color_on:t.entity_state_button_background_color_on||null,entity_state_button_icon_color_on:t.entity_state_button_icon_color_on||null,turn_off_on_cancel:!1!==t.turn_off_on_cancel,show_schedule:t.show_schedule||!1}),t.timer_instance_id&&(this._config.timer_instance_id=t.timer_instance_id),t.entity&&(this._config.entity=t.entity),t.sensor_entity&&(this._config.sensor_entity=t.sensor_entity);const o=localStorage.getItem(`simple-timer-slider-${i}`);let s=o?parseInt(o):NaN;(isNaN(s)||s<0)&&(s=e),s>e&&(s=e),this._sliderValue=s,localStorage.setItem(`simple-timer-slider-${i}`,this._sliderValue.toString()),this._restoreSchedule(),this.requestUpdate(),this._liveRuntimeSeconds=0,this._notificationSentForCurrentCycle=!1,this._effectiveSwitchEntity=null,this._effectiveSensorEntity=null,this._entitiesLoaded=!1}_getValidatedTimerButtons(t){let e=[];if(this._validationMessages=[],Array.isArray(t)){const i=[],o=new Set,s=[];t.forEach(t=>{let n,r,a="min",l="Min";const c=String(t).trim().toLowerCase().match(/^(\d+(?:\.\d+)?)\s*(s|sec|seconds|m|min|minutes|h|hr|hours|d|day|days)?(\*)?$/);if(c){const d=parseFloat(c[1]),h=c[1].includes("."),u=c[2]||"min",p=!!c[3],_=u.startsWith("h"),g=u.startsWith("d");if(d>9999)return void i.push(t);if(h&&!_&&!g)return void i.push(t);if(h&&(_||g)){const e=c[1].split(".")[1];if(e&&e.length>1)return void i.push(t)}if(n=d,u.startsWith("s")?(a="s",l="sec",r=n/60):u.startsWith("h")?(a="h",l="hr",r=60*n):u.startsWith("d")?(a="d",l="day",r=1440*n):(a="min",l="min",r=n),n>0){const i=`${r}`;p?e.push({displayValue:n,unit:a,labelUnit:l,minutesEquivalent:r,isDefault:p}):o.has(i)?s.push(t):(o.add(i),e.push({displayValue:n,unit:a,labelUnit:l,minutesEquivalent:r,isDefault:p}))}else i.push(t)}else i.push(t)});const n=[];return i.length>0&&n.push(`Invalid timer values ignored: ${i.join(", ")}. Format example: 30, "30s", "1h", "2d". Limit 9999.`),s.length>0&&n.push("Duplicate timer values were removed."),this._validationMessages=n,e.sort((t,e)=>t.minutesEquivalent-e.minutesEquivalent),e}return null==t||(console.warn(`TimerCard: Invalid timer_buttons type (${typeof t}):`,t,"- using empty array"),this._validationMessages=[`Invalid timer_buttons configuration. Expected array, got ${typeof t}.`]),[]}_determineEffectiveEntities(){var t,e;let i=null,o=null,s=!1;if(this.hass&&this.hass.states){if(null===(t=this._config)||void 0===t?void 0:t.timer_instance_id){const t=this._config.timer_instance_id,e=Object.keys(this.hass.states).filter(t=>t.startsWith("sensor.")).find(e=>{const i=this.hass.states[e];return i.attributes.entry_id===t&&"string"==typeof i.attributes.switch_entity_id});if(e){o=e,i=this.hass.states[e].attributes.switch_entity_id,i&&this.hass.states[i]?s=!0:console.warn(`TimerCard: Configured instance '${t}' sensor '${o}' links to missing or invalid switch '${i}'.`)}else console.warn(`TimerCard: Configured timer_instance_id '${t}' does not have a corresponding simple_timer sensor found.`)}if(!s&&(null===(e=this._config)||void 0===e?void 0:e.sensor_entity)){const t=this.hass.states[this._config.sensor_entity];t&&"string"==typeof t.attributes.entry_id&&"string"==typeof t.attributes.switch_entity_id?(o=this._config.sensor_entity,i=t.attributes.switch_entity_id,i&&this.hass.states[i]?(s=!0,console.info(`TimerCard: Using manually configured sensor_entity: Sensor '${o}', Switch '${i}'.`)):console.warn(`TimerCard: Manually configured sensor '${o}' links to missing or invalid switch '${i}'.`)):console.warn(`TimerCard: Manually configured sensor_entity '${this._config.sensor_entity}' not found or missing required attributes.`)}this._effectiveSwitchEntity===i&&this._effectiveSensorEntity===o||(this._effectiveSwitchEntity=i,this._effectiveSensorEntity=o,this.requestUpdate()),this._entitiesLoaded=s}else this._entitiesLoaded=!1}_getEntryId(){if(!this._effectiveSensorEntity||!this.hass||!this.hass.states)return console.error("Timer-card: _getEntryId called without a valid effective sensor entity."),null;const t=this.hass.states[this._effectiveSensorEntity];return t&&t.attributes.entry_id?t.attributes.entry_id:(console.error("Could not determine entry_id from effective sensor_entity attributes:",this._effectiveSensorEntity),null)}_startTimer(t,e="min",i="button"){var o;if(this._validationMessages=[],!this._entitiesLoaded||!this.hass||!this.hass.callService)return void console.error("Timer-card: Cannot start timer. Entities not loaded or callService unavailable.");const s=this._getEntryId();if(!s)return void console.error("Timer-card: Entry ID not found for starting timer.");this._effectiveSwitchEntity;let n=(null===(o=this._config)||void 0===o?void 0:o.reverse_mode)||!1;if(this._effectiveSensorEntity&&this.hass){const t=this.hass.states[this._effectiveSensorEntity];t&&t.attributes.default_timer_enabled&&(n=!1)}n?this.hass.callService(ct,"start_timer",{entry_id:s,duration:t,unit:e,reverse_mode:!0,start_method:i}):this.hass.callService(ct,"start_timer",{entry_id:s,duration:t,unit:e,start_method:i}),this._notificationSentForCurrentCycle=!1}_addTimer(t,e="min"){if(this._validationMessages=[],!this._entitiesLoaded||!this.hass||!this.hass.callService)return void console.error("Timer-card: Cannot add to timer. Entities not loaded or callService unavailable.");const i=this._getEntryId();i?this.hass.callService(ct,"add_timer",{entry_id:i,duration:t,unit:e}).then(()=>{console.log(`Timer-card: Added ${t} ${e} to active timer.`)}).catch(t=>{console.error("Timer-card: Error adding to timer:",t)}):console.error("Timer-card: Entry ID not found for adding to timer.")}_setSchedule(){if(this._validationMessages=[],!this._entitiesLoaded||!this.hass||!this.hass.callService)return void console.error("Timer-card: Cannot set schedule. Entities not loaded or callService unavailable.");const t=this._getEntryId();if(!t)return void console.error("Timer-card: Entry ID not found for scheduling.");const e=Number(this._scheduleDuration);this._scheduleTime&&e>0?(this._persistSchedule(),this.hass.callService(ct,"schedule_timer",{entry_id:t,start_time:5===this._scheduleTime.length?`${this._scheduleTime}:00`:this._scheduleTime,duration:e,unit:this._scheduleUnit,repeat:this._scheduleRepeat,days:this._scheduleRepeat?this._scheduleDays:[]}).then(()=>{this._scheduleExpanded=!1}).catch(t=>{console.error("Timer-card: Error setting schedule:",t)})):this._validationMessages=["Set a start time and a run-for duration above 0."]}_cancelSchedule(){if(!this.hass||!this.hass.callService)return;const t=this._getEntryId();t?this.hass.callService(ct,"cancel_schedule",{entry_id:t}).catch(t=>console.error("Timer-card: Error cancelling schedule:",t)):console.error("Timer-card: Entry ID not found for cancelling schedule.")}_toggleScheduleDay(t){this._scheduleDays=this._scheduleDays.includes(t)?this._scheduleDays.filter(e=>e!==t):[...this._scheduleDays,t],this._persistSchedule()}_scheduleStorageKey(){var t;return`simple-timer-schedule-${(null===(t=this._config)||void 0===t?void 0:t.timer_instance_id)||"default"}`}_persistSchedule(){try{localStorage.setItem(this._scheduleStorageKey(),JSON.stringify({time:this._scheduleTime,duration:this._scheduleDuration,unit:this._scheduleUnit,repeat:this._scheduleRepeat,days:this._scheduleDays}))}catch(t){console.warn("Timer-card: could not persist schedule form",t)}}_restoreSchedule(){try{const t=localStorage.getItem(this._scheduleStorageKey());if(!t)return;const e=JSON.parse(t);"string"==typeof e.time&&(this._scheduleTime=e.time),"number"==typeof e.duration&&(this._scheduleDuration=e.duration),"string"==typeof e.unit&&(this._scheduleUnit=e.unit),"boolean"==typeof e.repeat&&(this._scheduleRepeat=e.repeat),Array.isArray(e.days)&&(this._scheduleDays=e.days)}catch(t){console.warn("Timer-card: could not restore schedule form",t)}}_cancelTimer(){var t;if(this._validationMessages=[],!this._entitiesLoaded||!this.hass||!this.hass.callService)return void console.error("Timer-card: Cannot cancel timer. Entities not loaded or callService unavailable.");this._isCancelling=!0;const e=this._getEntryId();if(!e)return console.error("Timer-card: Entry ID not found for cancelling timer."),void(this._isCancelling=!1);const i=!1!==(null===(t=this._config)||void 0===t?void 0:t.turn_off_on_cancel);this.hass.callService(ct,"cancel_timer",{entry_id:e,turn_off_entity:i}).then(()=>{setTimeout(()=>{this._isCancelling=!1},1e3)}).catch(t=>{console.error("Timer-card: Error cancelling timer:",t),this._isCancelling=!1}),this._notificationSentForCurrentCycle=!1}_handleTimerControl(){var t;if(this._validationMessages=[],!this._entitiesLoaded||!this.hass||!this.hass.states)return void console.error("Timer-card: Cannot control timer. Entities not loaded.");const e=this._effectiveSensorEntity,i=this.hass.states[e];if(!i)return void console.error("Timer-card: Sensor entity not found.");if("active"===i.attributes.timer_state)return this._cancelTimer(),void console.log("Timer-card: Stopping active timer.");if(this._sliderValue>0){const e=(null===(t=this._config)||void 0===t?void 0:t.slider_unit)||"min";this._startTimer(this._sliderValue,e,"slider"),console.log(`Timer-card: Starting timer for ${this._sliderValue} ${e}`)}else console.warn("Timer-card: Slider value is 0, cannot start timer.")}_handleIndependentPower(t){var e,i;if(t.preventDefault(),t.stopPropagation(),!this._entitiesLoaded||!this.hass||!this._effectiveSwitchEntity)return void console.error("Timer-card: Cannot toggle power. Entities not loaded.");const o=this._effectiveSwitchEntity;console.log(`Timer-card: Toggling independent power for ${o}`);const s=this._effectiveSensorEntity?this.hass.states[this._effectiveSensorEntity]:void 0,n=null===(e=null==s?void 0:s.attributes)||void 0===e?void 0:e.power_toggle_route;if(n&&"direct"!==n){const t=this._getEntryId();if(!t)return void console.error("Timer-card: Cannot toggle power without an entry_id.");const e=!0===(null===(i=null==s?void 0:s.attributes)||void 0===i?void 0:i.device_active);return void this.hass.callService("simple_timer","manual_power_toggle",{entry_id:t,action:e?"turn_off":"turn_on"}).catch(t=>console.error("Timer-card: Error toggling power:",t))}this.hass.callService("homeassistant","toggle",{entity_id:o}).catch(t=>console.error("Timer-card: Error toggling power:",t))}_showMoreInfo(t){if(!this._entitiesLoaded||!this.hass)return void console.error("Timer-card: Cannot show more info. Entities not loaded.");const e=t||this._effectiveSensorEntity,i=new CustomEvent("hass-more-info",{bubbles:!0,composed:!0,detail:{entityId:e}});this.dispatchEvent(i)}get _effectiveStatusEntity(){var t;if(!this.hass||!this._effectiveSensorEntity)return null;const e=this.hass.states[this._effectiveSensorEntity],i=null===(t=null==e?void 0:e.attributes)||void 0===t?void 0:t.status_entity_id;return"string"==typeof i&&this.hass.states[i]?i:null}_showHistory(){this._showMoreInfo(this._effectiveStatusEntity||void 0)}connectedCallback(){var t,e;super.connectedCallback();const i=(null===(t=this._config)||void 0===t?void 0:t.timer_instance_id)||"default";if(localStorage.getItem(`simple-timer-slider-${i}`));else if(this._determineEffectiveEntities(),this._entitiesLoaded&&this.hass&&this._effectiveSensorEntity){const t=this.hass.states[this._effectiveSensorEntity],i=(null===(e=null==t?void 0:t.attributes)||void 0===e?void 0:e.timer_duration)||0;i>0&&i<=120&&(this._sliderValue=i)}this._determineEffectiveEntities(),this._updateLiveRuntime(),this._syncServerTime(),this._updateCountdown()}disconnectedCallback(){super.disconnectedCallback(),this._stopCountdown(),this._stopLiveRuntime(),this._longPressTimer&&window.clearTimeout(this._longPressTimer)}updated(t){(t.has("hass")||t.has("_config"))&&(this._determineEffectiveEntities(),this._updateLiveRuntime(),this._syncServerTime(),this._updateCountdown())}_updateLiveRuntime(){this._liveRuntimeSeconds=0}_stopLiveRuntime(){this._liveRuntimeSeconds=0}_updateCountdown(){if(!this._entitiesLoaded||!this.hass||!this.hass.states)return void this._stopCountdown();const t=this.hass.states[this._effectiveSensorEntity];if(!t||"active"!==t.attributes.timer_state)return this._stopCountdown(),void(this._notificationSentForCurrentCycle=!1);const e=t.attributes.timer_finishes_at;if(void 0===e)return console.warn("Timer-card: timer_finishes_at is undefined for active timer. Stopping countdown."),void this._stopCountdown();const i=new Date(e).getTime();if(this._countdownInterval&&this._currentFinishesAt!==i&&this._stopCountdown(),this._currentFinishesAt=i,!this._countdownInterval){const t=()=>{var t;const e=(new Date).getTime()+this._serverTimeOffset,o=Math.max(0,Math.round((i-e)/1e3));"countdown"!==((null===(t=this._config)||void 0===t?void 0:t.countdown_display)||"countdown")&&(this._remainingSeconds=o);if(this._getShowSeconds()){const t=Math.floor(o/3600),e=Math.floor(o%3600/60),i=o%60;this._timeRemaining=`${t.toString().padStart(2,"0")}:${e.toString().padStart(2,"0")}:${i.toString().padStart(2,"0")}`}else{const t=Math.floor(o/3600),e=Math.floor(o%3600/60);this._timeRemaining=`${t.toString().padStart(2,"0")}:${e.toString().padStart(2,"0")}`}0===o&&(this._stopCountdown(),this._notificationSentForCurrentCycle||(this._notificationSentForCurrentCycle=!0))};this._countdownInterval=window.setInterval(t,500),t()}}_stopCountdown(){this._countdownInterval&&(window.clearInterval(this._countdownInterval),this._countdownInterval=null),this._timeRemaining=null,this._remainingSeconds=0}_getShowSeconds(){var t;if(!this._entitiesLoaded||!this.hass||!this._effectiveSensorEntity)return!1;const e=this.hass.states[this._effectiveSensorEntity];return(null===(t=null==e?void 0:e.attributes)||void 0===t?void 0:t.show_seconds)||!1}_handleUsageClick(t){t.preventDefault(),this._isLongPress||this._showMoreInfo(),this._isLongPress=!1}_startLongPress(t){t.preventDefault(),this._isLongPress=!1,this._longPressTimer=window.setTimeout(()=>{this._isLongPress=!0,this._resetUsage(),"vibrate"in navigator&&navigator.vibrate(50)},800)}_endLongPress(t){t&&t.preventDefault(),this._longPressTimer&&(window.clearTimeout(this._longPressTimer),this._longPressTimer=null)}_startCountdownLongPress(t){t.preventDefault(),this._countdownLongPressTimer=window.setTimeout(()=>{this._showHistory(),"vibrate"in navigator&&navigator.vibrate(50)},800)}_endCountdownLongPress(t){t&&t.preventDefault(),this._countdownLongPressTimer&&(window.clearTimeout(this._countdownLongPressTimer),this._countdownLongPressTimer=null),this._countdownTouchStartPosition=null}_handleCountdownTouchStart(t){const e=t.touches[0];this._countdownTouchStartPosition={x:e.clientX,y:e.clientY},this._countdownLongPressTimer=window.setTimeout(()=>{this._showHistory(),"vibrate"in navigator&&navigator.vibrate(50)},800)}_handleCountdownTouchMove(t){if(!this._countdownTouchStartPosition||!this._countdownLongPressTimer)return;const e=t.touches[0],i=Math.abs(e.clientX-this._countdownTouchStartPosition.x),o=Math.abs(e.clientY-this._countdownTouchStartPosition.y);(i>10||o>10)&&this._endCountdownLongPress()}_handlePowerClick(t){"click"!==t.type||this._isLongPress||(t.preventDefault(),t.stopPropagation(),this._handleTimerControl()),this._isLongPress=!1}_handleTouchEnd(t){t.preventDefault(),t.stopPropagation(),this._longPressTimer&&(window.clearTimeout(this._longPressTimer),this._longPressTimer=null);let e=!1;if(this._touchStartPosition&&t.changedTouches[0]){const i=t.changedTouches[0],o=Math.abs(i.clientX-this._touchStartPosition.x),s=Math.abs(i.clientY-this._touchStartPosition.y),n=10;e=o>n||s>n}this._isLongPress||e||this._showMoreInfo(),this._isLongPress=!1,this._touchStartPosition=null}_handleTouchStart(t){t.preventDefault(),t.stopPropagation(),this._isLongPress=!1;const e=t.touches[0];this._touchStartPosition={x:e.clientX,y:e.clientY},this._longPressTimer=window.setTimeout(()=>{this._isLongPress=!0,this._resetUsage(),"vibrate"in navigator&&navigator.vibrate(50)},800)}_resetUsage(){if(this._validationMessages=[],!this._entitiesLoaded||!this.hass||!this.hass.callService)return void console.error("Timer-card: Cannot reset usage. Entities not loaded or callService unavailable.");const t=this._getEntryId();t?confirm("Сбросить суточное время до 00:00?\n\nЭто действие нельзя отменить.")&&this.hass.callService(ct,"reset_daily_usage",{entry_id:t}).then(()=>{console.log("Timer-card: Использовано сегодня reset successfully")}).catch(t=>{console.error("Timer-card: Error resetting daily usage:",t)}):console.error("Timer-card: Entry ID not found for resetting usage.")}_handleSliderChange(t){var e;const i=t.target;this._sliderValue=parseInt(i.value);const o=(null===(e=this._config)||void 0===e?void 0:e.timer_instance_id)||"default";localStorage.setItem(`simple-timer-slider-${o}`,this._sliderValue.toString())}_getCurrentTimerMode(){var t;if(!this._entitiesLoaded||!this.hass||!this._effectiveSensorEntity)return"normal";const e=this.hass.states[this._effectiveSensorEntity];return(null===(t=null==e?void 0:e.attributes)||void 0===t?void 0:t.reverse_mode)?"reverse":"normal"}_getSliderStyle(){var t,e,i;const o=(null===(t=this._config)||void 0===t?void 0:t.slider_thumb_color)||"#2ab69c",s=(null===(e=this._config)||void 0===e?void 0:e.slider_background_color)||"var(--secondary-background-color)",n=(null===(i=this._config)||void 0===i?void 0:i.slider_thumb_color)?this._adjustColorBrightness(o,20):"#4bd9bf",r=t=>{const e=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(t);return e?{r:parseInt(e[1],16),g:parseInt(e[2],16),b:parseInt(e[3],16)}:{r:42,g:182,b:156}},a=r(o),l=r(n);return`\n      .timer-slider {\n        background: ${s} !important;\n      }\n      .timer-slider::-webkit-slider-thumb {\n        background: ${o} !important;\n        border: 2px solid ${n} !important;\n        box-shadow: \n          0 0 0 2px rgba(${l.r}, ${l.g}, ${l.b}, 0.3),\n          0 0 8px rgba(${a.r}, ${a.g}, ${a.b}, 0.4),\n          0 2px 4px rgba(0, 0, 0, 0.2) !important;\n      }\n      .timer-slider::-webkit-slider-thumb:hover {\n        background: ${this._adjustColorBrightness(o,-10)} !important;\n        border: 2px solid ${n} !important;\n        box-shadow: \n          0 0 0 3px rgba(${l.r}, ${l.g}, ${l.b}, 0.4),\n          0 0 12px rgba(${a.r}, ${a.g}, ${a.b}, 0.6),\n          0 2px 6px rgba(0, 0, 0, 0.3) !important;\n      }\n      .timer-slider::-webkit-slider-thumb:active {\n        background: ${this._adjustColorBrightness(o,-20)} !important;\n        border: 2px solid ${n} !important;\n        box-shadow: \n          0 0 0 4px rgba(${l.r}, ${l.g}, ${l.b}, 0.5),\n          0 0 16px rgba(${a.r}, ${a.g}, ${a.b}, 0.7),\n          0 2px 8px rgba(0, 0, 0, 0.4) !important;\n      }\n      .timer-slider::-moz-range-thumb {\n        background: ${o} !important;\n        border: 2px solid ${n} !important;\n        box-shadow: \n          0 0 0 2px rgba(${l.r}, ${l.g}, ${l.b}, 0.3),\n          0 0 8px rgba(${a.r}, ${a.g}, ${a.b}, 0.4),\n          0 2px 4px rgba(0, 0, 0, 0.2) !important;\n      }\n      .timer-slider::-moz-range-thumb:hover {\n        background: ${this._adjustColorBrightness(o,-10)} !important;\n        border: 2px solid ${n} !important;\n        box-shadow: \n          0 0 0 3px rgba(${l.r}, ${l.g}, ${l.b}, 0.4),\n          0 0 12px rgba(${a.r}, ${a.g}, ${a.b}, 0.6),\n          0 2px 6px rgba(0, 0, 0, 0.3) !important;\n      }\n      .timer-slider::-moz-range-thumb:active {\n        background: ${this._adjustColorBrightness(o,-20)} !important;\n        border: 2px solid ${n} !important;\n        box-shadow: \n          0 0 0 4px rgba(${l.r}, ${l.g}, ${l.b}, 0.5),\n          0 0 16px rgba(${a.r}, ${a.g}, ${a.b}, 0.7),\n          0 2px 8px rgba(0, 0, 0, 0.4) !important;\n      }\n    `}_getTimerButtonStyle(){var t,e;const i=null===(t=this._config)||void 0===t?void 0:t.timer_button_font_color,o=null===(e=this._config)||void 0===e?void 0:e.timer_button_background_color;if(!i&&!o)return"";let s="";return(i||o)&&(s+=`\n        .timer-button {\n          ${i?`color: ${i} !important;`:""}\n          ${o?`background-color: ${o} !important;`:""}\n        }\n      `),s}_getPowerButtonStyle(){var t,e,i,o,s,n;const r=null===(t=this._config)||void 0===t?void 0:t.power_button_background_color,a=null===(e=this._config)||void 0===e?void 0:e.power_button_icon_color,l=null===(i=this._config)||void 0===i?void 0:i.entity_state_button_background_color,c=null===(o=this._config)||void 0===o?void 0:o.entity_state_button_icon_color,d=null===(s=this._config)||void 0===s?void 0:s.entity_state_button_background_color_on,h=null===(n=this._config)||void 0===n?void 0:n.entity_state_button_icon_color_on;if(!(r||a||l||c||d||h))return"";let u="";return(r||a)&&(u+=`\n        .timer-control-button {\n          ${r?`background-color: ${r} !important;`:""}\n        }\n        .timer-control-button ha-icon[icon] {\n          ${a?`color: ${a} !important;`:""}\n        }\n        .timer-control-button.reverse ha-icon[icon] {\n          ${a?`color: ${a} !important;`:""}\n        }\n      `),(l||c)&&(u+=`\n        .entity-state-button {\n          ${l?`background-color: ${l} !important;`:""}\n        }\n        .entity-state-button ha-icon[icon] {\n          ${c?`color: ${c} !important;`:""}\n        }\n        .entity-state-button.reverse ha-icon[icon] {\n          ${c?`color: ${c} !important;`:""}\n        }\n      `),(d||h)&&(u+=`\n        .entity-state-button.on {\n          ${d?`background-color: ${d} !important;`:""}\n        }\n        .entity-state-button.on ha-icon[icon] {\n          ${h?`color: ${h} !important;`:""}\n        }\n        /* Ensure specific override if needed */\n        .entity-state-button.on.reverse ha-icon[icon] {\n          ${h?`color: ${h} !important;`:""}\n        }\n      `),u}_adjustColorBrightness(t,e){const i=parseInt(t.replace("#",""),16),o=Math.round(2.55*e);return"#"+(16777216+65536*Math.max(0,Math.min(255,(i>>16)+o))+256*Math.max(0,Math.min(255,(i>>8&255)+o))+Math.max(0,Math.min(255,(255&i)+o))).toString(16).slice(1)}async _fetchLovelaceConfig(){if(!this.hass)return null;try{const t=this._getDashboardUrlPath();return await this.hass.callWS({type:"lovelace/config",url_path:t})}catch(t){return console.warn("TimerCard: Failed to fetch lovelace config",t),null}}_getDashboardUrlPath(){const t=window.location.pathname.split("/");return t.length>1&&"lovelace"!==t[1]?t[1]:null}_renderPreview(){var t,e,i,o,s,n,r;const a=(null===(t=this._config)||void 0===t?void 0:t.countdown_display)||"countdown",l="progress"!==a,c="countdown"!==a,d=Math.ceil(10.4);return H`
+      <style>
+        ${this._getSliderStyle()}
+        ${this._getTimerButtonStyle()}
+        ${this._getPowerButtonStyle()}
+      </style>
+      <ha-card>
+        <div class="card-header ${(null===(e=this._config)||void 0===e?void 0:e.card_title)?"has-title":""}">
+          <div class="card-title">${(null===(i=this._config)||void 0===i?void 0:i.card_title)||""}</div>
+        </div>
+        <div class="card-content">
+          <div class="entity-state-button">
+            <ha-icon icon="${(null===(o=this._config)||void 0===o?void 0:o.entity_state_icon)||(null===(s=this._config)||void 0===s?void 0:s.power_button_icon)||"mdi:power"}"></ha-icon>
+          </div>
+          <div class="countdown-section">
+            ${l?H`<div class="countdown-display">00:10:00</div>`:""}
+            ${c?H`
+              <div class="block-progress-bar ${l?"":"solo"}">
+                ${Array.from({length:16},(t,e)=>H`
+                  <div class="progress-block ${e<d?"active":""}"></div>
+                `)}
+              </div>
+            `:""}
+            <div class="daily-usage-display">Использовано сегодня: 00:03:20</div>
+          </div>
+          <div class="slider-row">
+            <input type="range" min="0" step="1" max="${(null===(n=this._config)||void 0===n?void 0:n.slider_max)||120}" value="10" class="timer-slider" />
+            <div class="slider-right-group">
+              <span class="slider-label">10 ${(null===(r=this._config)||void 0===r?void 0:r.slider_unit)||"min"}</span>
+              <div class="timer-control-button">
+                <ha-icon icon="mdi:play"></ha-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="button-grid">
+          ${[15,30,60,90,120].map(t=>H`
+            <div class="timer-button">
+              <div class="timer-button-value">${t}</div>
+              <div class="timer-button-unit">min</div>
+            </div>
+          `)}
+        </div>
+      </ha-card>
+    `}render(){var t,e,i,o,s,n,r,a,l,c,d,h,u,p;let _=null,g=!1;if(this.hass){if(!this._entitiesLoaded)if((null===(t=this._config)||void 0===t?void 0:t.timer_instance_id)&&"default"!==this._config.timer_instance_id){const t=Object.values(this.hass.states).find(t=>t.attributes.entry_id===this._config.timer_instance_id&&t.entity_id.startsWith("sensor."));t?"string"==typeof t.attributes.switch_entity_id&&t.attributes.switch_entity_id&&this.hass.states[t.attributes.switch_entity_id]?(_="Загрузка карточки таймера. Подождите...",g=!1):(_=`Timer Control Instance '${this._config.timer_instance_id}' linked to missing or invalid device '${t.attributes.switch_entity_id}'. Please check instance configuration.`,g=!0):(_=`Timer instance '${this._config.timer_instance_id}' not found. It may have been removed, or the Simple Timer integration is not loaded yet. Check Settings → Devices & Services, or pick another instance in the card editor.`,g=!0)}else{if(!(null===(e=this._config)||void 0===e?void 0:e.sensor_entity))return this._renderPreview();{const t=this.hass.states[this._config.sensor_entity];t?"string"==typeof t.attributes.switch_entity_id&&t.attributes.switch_entity_id&&this.hass.states[t.attributes.switch_entity_id]?(_="Загрузка карточки таймера. Подождите...",g=!1):(_=`Configured Timer Control Sensor '${this._config.sensor_entity}' is invalid or its linked device '${t.attributes.switch_entity_id}' is missing. Please select a valid instance.`,g=!0):(_=`Configured Timer Control Sensor '${this._config.sensor_entity}' not found. Please select a valid instance in the card editor.`,g=!0)}}}else _="Home Assistant object (hass) not available. Card cannot load.",g=!0;if(_)return H`<ha-card><div class="${g?"warning":"placeholder"}">${_}</div></ha-card>`;const m=this.hass.states[this._effectiveSwitchEntity],v=this.hass.states[this._effectiveSensorEntity],f="boolean"==typeof v.attributes.device_active?v.attributes.device_active:"on"===m.state,b="active"===v.attributes.timer_state,y=v.attributes.timer_duration||0,x=v.attributes.reverse_mode,w=parseFloat(v.state)||0;let $,S;if(this._getShowSeconds()){const t=Math.floor(w),e=Math.floor(t/3600),i=Math.floor(t%3600/60),o=t%60;$=`Использовано сегодня: ${e.toString().padStart(2,"0")}:${i.toString().padStart(2,"0")}:${o.toString().padStart(2,"0")}`,S=this._timeRemaining||"00:00:00"}else{const t=Math.floor(w/60),e=t%60;$=`Использовано сегодня: ${Math.floor(t/60).toString().padStart(2,"0")}:${e.toString().padStart(2,"0")}`,S=this._timeRemaining||"00:00"}const C=v.attributes.watchdog_message,k=60*y,T=v.attributes.timer_finishes_at;let E=0;if(b&&k>0&&T){const t=(new Date).getTime()+this._serverTimeOffset,e=Math.max(0,(new Date(T).getTime()-t)/1e3);E=Math.min(1,e/k)}const A=E>0?Math.max(1,Math.ceil(16*E)):0,P=(null===(i=this._config)||void 0===i?void 0:i.countdown_display)||"countdown",I="progress"!==P,M="countdown"!==P;return H`
+      <style>
+        ${this._getSliderStyle()}
+        ${this._getTimerButtonStyle()}
+        ${this._getPowerButtonStyle()}
+      </style>
+      <ha-card>
+        <div class="card-header ${(null===(o=this._config)||void 0===o?void 0:o.card_title)?"has-title":""}">
+						<div class="card-title">${(null===(s=this._config)||void 0===s?void 0:s.card_title)||""}</div>
+				</div>
+
+        ${C?H`
+          <div class="status-message warning watchdog-banner">
+            <ha-icon icon="mdi:alert-outline" class="status-icon"></ha-icon>
+            <span class="status-text">${C}</span>
+          </div>
+        `:""}
+
+
+        <div class="card-content">
+
+          
+          <!-- Independent Power Toggle (Always Visible now) -->
+          <div class="entity-state-button ${f?"on":""}"
+                @click=${this._handleIndependentPower}
+                title="Переключить питание (независимо)">
+            <ha-icon icon="${(null===(n=this._config)||void 0===n?void 0:n.entity_state_icon)||(null===(r=this._config)||void 0===r?void 0:r.power_button_icon)||"mdi:power"}"></ha-icon>
+          </div>
+          
+          ${""}
+
+          <!-- Обратный отсчёт Display Section -->
+          <div class="countdown-section">
+            ${I?H`
+              <div class="countdown-display ${b?"active":""} ${x?"reverse":""}"
+                   @mousedown=${this._startCountdownLongPress}
+                   @mouseup=${this._endCountdownLongPress}
+                   @mouseleave=${this._endCountdownLongPress}
+                   @touchstart=${this._handleCountdownTouchStart}
+                   @touchmove=${this._handleCountdownTouchMove}
+                   @touchend=${this._endCountdownLongPress}
+                   @touchcancel=${this._endCountdownLongPress}
+                   title="Удерживайте, чтобы открыть историю">
+                ${S}
+              </div>
+            `:""}
+
+            <!-- Block Шкала прогресса -->
+            ${M?H`
+              <div class="block-progress-bar ${x?"reverse":""} ${I?"":"solo"}"
+                   @mousedown=${this._startCountdownLongPress}
+                   @mouseup=${this._endCountdownLongPress}
+                   @mouseleave=${this._endCountdownLongPress}
+                   @touchstart=${this._handleCountdownTouchStart}
+                   @touchmove=${this._handleCountdownTouchMove}
+                   @touchend=${this._endCountdownLongPress}
+                   @touchcancel=${this._endCountdownLongPress}
+                   title="Удерживайте, чтобы открыть историю">
+                ${Array.from({length:16},(t,e)=>{const i=e<A;return H`
+                    <div class="progress-block ${i?"active":""} ${b&&i&&e===A-1?"lead":""}"></div>
+                  `})}
+              </div>
+            `:""}
+
+						${!1!==(null===(a=this._config)||void 0===a?void 0:a.show_daily_usage)?H`
+							<div class="daily-usage-display"
+									 @click=${this._handleUsageClick}
+									 @mousedown=${this._startLongPress}
+									 @mouseup=${this._endLongPress}
+									 @mouseleave=${this._endLongPress}
+									 @touchstart=${this._handleTouchStart}
+									 @touchend=${this._handleTouchEnd}
+									 @touchcancel=${this._endLongPress}
+									 title="Нажмите для подробностей, удерживайте для сброса суточного времени">
+								${$}
+            </div>
+						`:""}
+          </div>
+
+          <!-- Slider Row -->
+          ${(null===(l=this._config)||void 0===l?void 0:l.hide_slider)?"":H`
+          <div class="slider-row">
+            <input
+              type="range"
+              min="0"
+              step="1"
+              max="${(null===(c=this._config)||void 0===c?void 0:c.slider_max)||120}"
+              .value=${this._sliderValue.toString()}
+              @input=${this._handleSliderChange}
+              class="timer-slider"
+            />
+            
+            <div class="slider-right-group">
+                <span class="slider-label">${this._sliderValue} ${(null===(d=this._config)||void 0===d?void 0:d.slider_unit)||"min"}</span>
+                
+                <div class="timer-control-button ${b?"active":""} ${b||0!==this._sliderValue?"":"disabled"}" 
+                     @click=${b||0!==this._sliderValue?this._handleTimerControl:null}
+                     title="${b?"Остановить таймер":0===this._sliderValue?"Установите время для запуска":"Запустить таймер"}">
+                  <ha-icon icon="${b||0===this._sliderValue?"mdi:stop":"mdi:play"}"></ha-icon>
+                </div>
+            </div>
+          </div>
+          `}
+
+          </div>
+          
+           <!-- Timer Buttons Grid -->
+           ${this.buttons.length>0||(null===(h=this._config)||void 0===h?void 0:h.hide_slider)&&b?H`
+          <div class="button-grid">
+            ${this.buttons.map(t=>{if(t.isDefault)return"";const e=b&&Math.abs(y-t.minutesEquivalent)<.001&&"button"===v.attributes.timer_start_method;return H`
+                <div class="timer-button ${e?"active":""}" 
+                     @click=${()=>{b?this._addTimer(t.displayValue,t.unit):this._startTimer(t.displayValue,t.unit,"button")}}>
+                  <div class="timer-button-value">${b?"+":""}${t.displayValue}</div>
+                  <div class="timer-button-unit">${t.labelUnit}</div>
+                </div>
+              `})}
+            
+            ${(null===(u=this._config)||void 0===u?void 0:u.hide_slider)?H`
+                <!-- Stop Button appended to grid when slider is hidden -->
+                <div class="timer-button stop-button ${b?"active":"disabled"}" 
+                     style="color: var(--primary-color);"
+                     @click=${b?this._handleTimerControl:null}>
+                  <div class="timer-button-value">
+                    <ha-icon icon="mdi:stop"></ha-icon>
+                  </div>
+                  <div class="timer-button-unit">Stop</div>
+                </div>
+            `:""}
+          </div>
+          `:""}
+
+          ${(null===(p=this._config)||void 0===p?void 0:p.show_schedule)?this._renderSchedulePanel(v):""}
+        </div>
+
+        ${this._validationMessages.length>0?H`
+          <div class="status-message warning">
+            <ha-icon icon="mdi:alert-outline" class="status-icon"></ha-icon>
+            <div class="status-text">
+                ${this._validationMessages.map(t=>H`<div>${t}</div>`)}
+            </div>
+          </div>
+        `:""}
+      </ha-card>
+    `}_formatScheduleClock(t){var e;try{const i=new Date(t),o=null===(e=this.hass)||void 0===e?void 0:e.locale,s=(null==o?void 0:o.language)||[];let n;return"12"===(null==o?void 0:o.time_format)?n=!0:"24"===(null==o?void 0:o.time_format)&&(n=!1),i.toLocaleString(s,Object.assign({month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"},void 0===n?{}:{hour12:n}))}catch(e){return t}}_orderDaysByLocale(){var t,e,i,o;const s={mon:{key:"mon",label:"M"},tue:{key:"tue",label:"T"},wed:{key:"wed",label:"W"},thu:{key:"thu",label:"T"},fri:{key:"fri",label:"F"},sat:{key:"sat",label:"S"},sun:{key:"sun",label:"S"}},n=["mon","tue","wed","thu","fri","sat","sun"];let r="mon";const a=null===(e=null===(t=this.hass)||void 0===t?void 0:t.locale)||void 0===e?void 0:e.first_weekday,l={monday:"mon",tuesday:"tue",wednesday:"wed",thursday:"thu",friday:"fri",saturday:"sat",sunday:"sun"};if(a&&l[a])r=l[a];else try{const t=null===(o=null===(i=this.hass)||void 0===i?void 0:i.locale)||void 0===o?void 0:o.language,e=new Intl.Locale(t),s=e.weekInfo||e.getWeekInfo&&e.getWeekInfo(),a=null==s?void 0:s.firstDay;a&&(r=n[(a-1)%7])}catch(t){}const c=n.indexOf(r);return[...n.slice(c),...n.slice(0,c)].map(t=>s[t])}_renderSchedulePanel(t){var e;const i=this._orderDaysByLocale();if("armed"===(null===(e=null==t?void 0:t.attributes)||void 0===e?void 0:e.schedule_state)&&t.attributes.scheduled_start){const e=this._formatScheduleClock(t.attributes.scheduled_start),o=t.attributes.scheduled_duration,s=t.attributes.scheduled_unit||"min",n=t.attributes.schedule_repeat,r=t.attributes.schedule_days||[],a={mon:0,tue:1,wed:2,thu:3,fri:4,sat:5,sun:6},l={0:"Mon",1:"Tue",2:"Wed",3:"Thu",4:"Fri",5:"Sat",6:"Sun"};let c="";if(n)if(0===r.length||7===r.length)c="Повтор ежедневно";else{const t=i.map(t=>a[t.key]).filter(t=>r.includes(t)).map(t=>l[t]);c=`Repeats ${t.join(", ")}`}else c="Однократно";return H`
+        <div class="schedule-banner">
+          <ha-icon class="sched-ico" icon="mdi:clock-outline"></ha-icon>
+          <div class="sched-banner-text">
+            <div class="sched-banner-main">Starts ${e} · runs ${o} ${s}</div>
+            <div class="sched-banner-sub">${c}</div>
+          </div>
+          <div class="sched-banner-x" @click=${this._cancelSchedule} title="Отменить расписание">
+            <ha-icon icon="mdi:close"></ha-icon>
+          </div>
+        </div>
+      `}return this._scheduleExpanded?H`
+      <div class="schedule-panel">
+        <div class="schedule-toggle open" @click=${()=>{this._scheduleExpanded=!1}}>
+          <ha-icon icon="mdi:clock-outline"></ha-icon>
+          <span>Расписание таймера</span>
+          <ha-icon class="sched-chevron" icon="mdi:chevron-up"></ha-icon>
+        </div>
+
+        <div class="sched-field">
+          <div class="sched-label">Запуск в</div>
+          <input class="sched-time" type="time"
+            .value=${this._scheduleTime}
+            @input=${t=>{this._scheduleTime=t.target.value,this._persistSchedule()}} />
+        </div>
+
+        <div class="sched-field">
+          <div class="sched-label">Длительность</div>
+          <div class="sched-dur-row">
+            <input class="sched-num" type="number" min="1" step="1"
+              .value=${String(this._scheduleDuration)}
+              @input=${t=>{this._scheduleDuration=Number(t.target.value),this._persistSchedule()}} />
+            <select class="sched-unit"
+              .value=${this._scheduleUnit}
+              @change=${t=>{this._scheduleUnit=t.target.value,this._persistSchedule()}}>
+              <option value="s">sec</option>
+              <option value="min">min</option>
+              <option value="h">hr</option>
+            </select>
+          </div>
+          ${this.buttons.filter(t=>!t.isDefault).length>0?H`
+            <div class="sched-shortcut-label">Быстрый выбор</div>
+            <div class="sched-pills">
+              ${this.buttons.filter(t=>!t.isDefault).map(t=>H`
+                <div class="sched-pill ${this._scheduleDuration===t.displayValue&&this._scheduleUnit===t.unit?"selected":""}"
+                  @click=${()=>{this._scheduleDuration=t.displayValue,this._scheduleUnit=t.unit,this._persistSchedule()}}>
+                  ${t.displayValue} ${t.labelUnit}
+                </div>
+              `)}
+            </div>
+          `:""}
+        </div>
+
+        <div class="sched-repeat-row">
+          <span>Повторять</span>
+          <ha-switch
+            .checked=${this._scheduleRepeat}
+            @change=${t=>{this._scheduleRepeat=t.target.checked,this._persistSchedule()}}></ha-switch>
+        </div>
+
+        ${this._scheduleRepeat?H`
+          <div class="sched-days">
+            ${i.map(t=>H`
+              <div class="sched-day ${this._scheduleDays.includes(t.key)?"on":""}"
+                @click=${()=>this._toggleScheduleDay(t.key)}>${t.label}</div>
+            `)}
+          </div>
+        `:""}
+
+        <div class="sched-actions">
+          <div class="sched-btn ghost" @click=${()=>{this._scheduleExpanded=!1}}>Cancel</div>
+          <div class="sched-btn primary" @click=${this._setSchedule}>Установить</div>
+        </div>
+      </div>
+    `:H`
+        <div class="schedule-toggle" @click=${()=>{this._scheduleExpanded=!0}}>
+          <ha-icon icon="mdi:clock-outline"></ha-icon>
+          <span>Расписание таймера</span>
+          <ha-icon class="sched-chevron" icon="mdi:chevron-down"></ha-icon>
+        </div>
+      `}static get styles(){return lt}_syncServerTime(){if(!this.hass||!this._effectiveSensorEntity)return;const t=this.hass.states[this._effectiveSensorEntity];if(!(null==t?void 0:t.last_updated))return;const e=t.last_updated;if(e===this._lastSyncedUpdate)return;this._lastSyncedUpdate=e;const i=new Date(e).getTime()-(new Date).getTime();Math.abs(i)>2e3?this._serverTimeOffset=i:this._serverTimeOffset=0}}customElements.get("timer-card")||customElements.define("timer-card",ht),window.customCards=window.customCards||[],window.customCards.some(t=>"timer-card"===t.type)||window.customCards.push({type:"timer-card",name:"HA Simple Timer Card",description:"Карточка для интеграции Simple Timer.",preview:!0,getEntitySuggestion:(t,e)=>{if(!e.startsWith("sensor."))return null;const i=t.states[e];if(!i||"string"!=typeof i.attributes.switch_entity_id)return null;const o=i.attributes.entry_id;return{config:Object.assign(Object.assign({},ht.getStubConfig(t)),o?{timer_instance_id:o}:{sensor_entity:e})}}});const ut=n`
+      .card-config-group {
+        padding: 16px;
+        background-color: var(--card-background-color);
+        border-top: 1px solid var(--divider-color);
+        margin-top: 16px;
+      }
+      h3 {
+        margin-top: 0;
+        margin-bottom: 16px;
+        font-size: 1.1em;
+        font-weight: normal;
+        color: var(--primary-text-color);
+      }
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px 16px;
+        margin-bottom: 16px;
+      }
+      @media (min-width: 400px) {
+        .checkbox-grid {
+          grid-template-columns: repeat(5, 1fr);
+        }
+      }
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: var(--primary-text-color);
+      }
+      .checkbox-label input[type="checkbox"] {
+        margin-right: 8px;
+        min-width: 20px;
+        min-height: 20px;
+      }
+      .timer-buttons-info {
+        padding: 12px;
+        background-color: var(--secondary-background-color);
+        border-radius: 8px;
+        border: 1px solid var(--divider-color);
+      }
+      .timer-buttons-info p {
+        margin: 4px 0;
+        font-size: 14px;
+        color: var(--primary-text-color);
+      }
+      .warning-text {
+        color: var(--warning-color);
+        font-weight: bold;
+      }
+      .info-text {
+        color: var(--primary-text-color);
+        font-style: italic;
+      }
+      
+      .card-config {
+        padding: 16px;
+      }
+      .config-row {
+        margin-bottom: 16px;
+      }
+      .config-row ha-textfield,
+      .config-row ha-select {
+        width: 100%;
+      }
+      .config-row ha-formfield {
+        display: flex;
+        align-items: center;
+      }
+
+      /* Timer Chips UI */
+      .timer-chips-container {
+        margin-bottom: 8px;
+      }
+
+      .chips-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 40px;
+        padding: 8px 0;
+      }
+
+      .timer-chip {
+        display: flex;
+        align-items: center;
+        background-color: var(--secondary-background-color);
+        border: 1px solid var(--divider-color);
+        border-radius: 16px;
+        padding: 4px 12px;
+        font-size: 14px;
+        color: var(--primary-text-color);
+        transition: background-color 0.2s;
+      }
+
+      .timer-chip:hover {
+        background-color: var(--secondary-text-color);
+        color: var(--primary-background-color);
+      }
+
+      .remove-chip {
+        margin-left: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        opacity: 0.6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+      }
+
+      .remove-chip:hover {
+        opacity: 1;
+        background-color: rgba(0,0,0,0.1);
+      }
+
+      .add-timer-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      /* Native input styled like HA's filled ha-textfield (Add Timer field) */
+      .ht-field {
+        height: 56px;
+        box-sizing: border-box;
+        padding: 0 12px;
+        border: none;
+        border-bottom: 1px solid var(--divider-color, rgba(127, 127, 127, 0.4));
+        border-radius: 4px 4px 0 0;
+        background: var(--secondary-background-color, rgba(127, 127, 127, 0.1));
+        color: var(--primary-text-color);
+        font-size: 1em;
+        font-family: inherit;
+        outline: none;
+      }
+      .ht-field:focus {
+        border-bottom: 2px solid var(--primary-color);
+      }
+      .ht-field::placeholder {
+        color: var(--secondary-text-color);
+      }
+
+      /* Compact native input for the color hex fields */
+      .ht-color-label {
+        font-size: 0.72em;
+        color: var(--secondary-text-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .ht-input {
+        height: 34px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 8px;
+        border: 1px solid var(--divider-color, rgba(127, 127, 127, 0.4));
+        border-radius: 4px;
+        background: var(--secondary-background-color, rgba(127, 127, 127, 0.1));
+        color: var(--primary-text-color);
+        font-size: 0.85em;
+        font-family: inherit;
+        outline: none;
+      }
+      .ht-input:focus {
+        border-color: var(--primary-color);
+      }
+      .ht-input::placeholder {
+        color: var(--secondary-text-color);
+      }
+
+      .add-btn {
+        background-color: var(--primary-color);
+        color: var(--text-primary-color);
+        padding: 0 16px;
+        height: 56px; /* Match textfield height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: -6px; /* Align slightly better with textfield label offset */
+      }
+      .add-btn:hover {
+        opacity: 0.9;
+      }
+      .add-btn:active {
+        opacity: 0.7;
+      }
+`;let pt=null;const _t="instance_title",gt=[15,30,60,90,120,150];class mt extends rt{constructor(){super(),this._configFullyLoaded=!1,this._timerInstancesOptions=[],this._newTimerButtonValue="",this._lastInstanceSig="",this._computeLabel=t=>{var e;return null!==(e={card_title:"Заголовок карточки (необязательно)",entity_state_icon:"Иконка состояния устройства (необязательно)",slider_max:"Максимум ползунка (1–9999)",slider_unit:"Единица ползунка",countdown_display:"Отображение оставшегося времени",turn_off_on_cancel:"Выключать устройство при отмене таймера",reverse_mode:"Обратный режим (отложенный запуск)",hide_slider:"Скрыть ползунок таймера",show_daily_usage:"Показывать суточное время работы",show_schedule:"Показывать расписание"}[t.name])&&void 0!==e?e:t.name},this._config={type:"custom:timer-card",timer_buttons:[...gt],timer_instance_id:null,card_title:null}}_getComputedCSSVariable(t,e="#000000"){try{const e=getComputedStyle(document.documentElement).getPropertyValue(t).trim();if(e&&""!==e)return e}catch(e){console.warn(`Failed to get CSS variable ${t}:`,e)}return e}_rgbToHex(t){const e=t.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/);if(e){return"#"+((1<<24)+(parseInt(e[1])<<16)+(parseInt(e[2])<<8)+parseInt(e[3])).toString(16).slice(1)}return t}_getThemeColorHex(t,e="#000000"){const i=this._getComputedCSSVariable(t,e);return i.startsWith("#")?i:i.startsWith("rgb")?this._rgbToHex(i):e}async _getSimpleTimerInstances(){if(!this.hass||!this.hass.states)return console.warn("TimerCardEditor: hass.states not available when trying to fetch instances from states."),[];const t=new Map;for(const e in this.hass.states){const i=this.hass.states[e];if(e.startsWith("sensor.")&&e.includes("runtime")&&i.attributes.entry_id&&"string"==typeof i.attributes.entry_id&&i.attributes.switch_entity_id&&"string"==typeof i.attributes.switch_entity_id){const o=i.attributes.entry_id,s=i.attributes[_t];let n=`Timer Control (${o.substring(0,8)})`;console.debug(`TimerCardEditor: Processing sensor ${e} (Entry: ${o})`),console.debug(`TimerCardEditor: Found raw attribute '${_t}': ${s}`),console.debug("TimerCardEditor: Type of raw attribute: "+typeof s),s&&"string"==typeof s&&""!==s.trim()?(n=s.trim(),console.debug(`TimerCardEditor: Using '${_t}' for label: "${n}"`)):console.warn(`TimerCardEditor: Sensor '${e}' has no valid '${_t}' attribute. Falling back to entry ID based label: "${n}".`),t.has(o)?console.debug(`TimerCardEditor: Skipping duplicate entry_id: ${o}`):(t.set(o,{value:o,label:n}),console.debug(`TimerCardEditor: Added instance: ${n} (${o}) from sensor: ${e}`))}}const e=Array.from(t.values());return e.sort((t,e)=>t.label.localeCompare(e.label)),0===e.length&&console.info("TimerCardEditor: No Simple Timer integration instances found by scanning hass.states."),e}_getValidatedTimerButtons(t){if(Array.isArray(t)){const e=[],i=new Set;t.forEach(t=>{let o=String(t).trim().toLowerCase();o.endsWith("*")&&(o=o.slice(0,-1));const s=o.match(/^(\d+(?:\.\d+)?)\s*(s|sec|seconds|m|min|minutes|h|hr|hours|d|day|days)?$/);if(s){const n=parseFloat(s[1]),r=s[1].includes("."),a=s[2]||"min",l=a.startsWith("h")||["h","hr","hours"].includes(a),c=a.startsWith("d")||["d","day","days"].includes(a);if(r&&!l&&!c)return;if(r&&(l||c)){const t=s[1].split(".")[1];if(t&&t.length>1)return}if(n>9999)return;["m","min","minutes"].includes(a)?n>0&&n<=9999&&(i.has(String(n))||(e.push(n),i.add(String(n)))):i.has(o)||(e.push(t.toString().replace("*","")),i.add(o))}});const o=e.filter(t=>"number"==typeof t),s=e.filter(t=>"string"==typeof t);return o.sort((t,e)=>t-e),s.sort(),[...o,...s]}return null==t?(console.log("TimerCardEditor: No timer_buttons in config, using empty array."),[]):(console.warn(`TimerCardEditor: Invalid timer_buttons type (${typeof t}):`,t,"- using empty array"),[])}async setConfig(t){const e=Object.assign({},this._config),i=this._getValidatedTimerButtons(t.timer_buttons),o=Object.assign(Object.assign({},t),{type:t.type||"custom:timer-card",timer_buttons:i,card_title:t.card_title||null,entity_state_icon:t.entity_state_icon||t.power_button_icon||null,slider_max:t.slider_max||120,slider_unit:t.slider_unit||"min",reverse_mode:t.reverse_mode||!1,hide_slider:t.hide_slider||!1,show_daily_usage:!1!==t.show_daily_usage,countdown_display:t.countdown_display||"countdown",slider_thumb_color:t.slider_thumb_color||null,slider_background_color:t.slider_background_color||null,timer_button_font_color:t.timer_button_font_color||null,timer_button_background_color:t.timer_button_background_color||null,power_button_background_color:t.power_button_background_color||null,power_button_icon_color:t.power_button_icon_color||null,entity_state_button_background_color:t.entity_state_button_background_color||null,entity_state_button_icon_color:t.entity_state_button_icon_color||null,entity_state_button_background_color_on:t.entity_state_button_background_color_on||null,entity_state_button_icon_color_on:t.entity_state_button_icon_color_on||null,turn_off_on_cancel:!1!==t.turn_off_on_cancel,show_schedule:t.show_schedule||!1});t.timer_instance_id?o.timer_instance_id=t.timer_instance_id:console.info("TimerCardEditor: setConfig - no timer_instance_id in config, will remain unset"),t.entity&&(o.entity=t.entity),t.sensor_entity&&(o.sensor_entity=t.sensor_entity),this._config=o,this._configFullyLoaded=!0,JSON.stringify(e)!==JSON.stringify(this._config)?this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}})):console.log("TimerCardEditor: Config unchanged, not dispatching event"),this.requestUpdate()}connectedCallback(){super.connectedCallback(),(pt||(pt=(async()=>{var t,e,i,o;if(!customElements.get("ha-form"))try{const s=await(null===(e=(t=window).loadCardHelpers)||void 0===e?void 0:e.call(t));if(!s)return;const n=await s.createCardElement({type:"entities",entities:[]});await(null===(o=null===(i=null==n?void 0:n.constructor)||void 0===i?void 0:i.getConfigElement)||void 0===o?void 0:o.call(i)),await customElements.whenDefined("ha-form")}catch(t){console.warn("TimerCardEditor: could not preload ha-form",t)}})(),pt)).then(()=>this.requestUpdate())}updated(t){if(super.updated(t),t.has("hass")&&this.hass){const t=this._instanceSignature();t===this._lastInstanceSig&&0!==this._timerInstancesOptions.length||(this._lastInstanceSig=t,this._fetchTimerInstances())}}_instanceSignature(){var t;if(!(null===(t=this.hass)||void 0===t?void 0:t.states))return"";const e=[];for(const t in this.hass.states){const i=this.hass.states[t];t.startsWith("sensor.")&&t.includes("runtime")&&i.attributes.entry_id&&i.attributes.switch_entity_id&&e.push(`${i.attributes.entry_id}:${i.attributes[_t]||""}`)}return e.sort().join("|")}async _fetchTimerInstances(){var t;if(this.hass){if(this._timerInstancesOptions=await this._getSimpleTimerInstances(),(null===(t=this._config)||void 0===t?void 0:t.timer_instance_id)&&this._timerInstancesOptions.length>0){if(!this._timerInstancesOptions.some(t=>t.value===this._config.timer_instance_id)){console.warn(`TimerCardEditor: Previously configured instance '${this._config.timer_instance_id}' no longer exists. User will need to select a new instance.`);const t=Object.assign(Object.assign({},this._config),{timer_instance_id:null});this._config=t,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0}))}}else console.info("TimerCardEditor: No timer_instance_id configured or no instances available. User must manually select.");this.requestUpdate()}}_handleNewTimerInput(t){const e=t.target;this._newTimerButtonValue=e.value}_addTimerButton(){var t;const e=this._newTimerButtonValue.trim();if(!e)return;const i=e.match(/^(\d+(?:\.\d+)?)\s*(s|sec|seconds|m|min|minutes|h|hr|hours|d|day|days)?$/i);if(!i)return void alert("Неверный формат! Используйте, например: 30, 30s, 10m, 1.5h, 1d.");const o=parseFloat(i[1]),s=i[1].includes("."),n=(i[2]||"min").toLowerCase(),r=n.startsWith("h"),a=n.startsWith("d");if(o>9999)return void alert("Значение не может превышать 9999");if(s&&!r&&!a)return void alert("Fractional values are only allowed for Часы (ч) and Дни (д)");if(s&&(r||a)){const t=i[1].split(".")[1];if(t&&t.length>1)return void alert("Допускается не более одного знака после запятой (например, 1.5)")}let l=o;if(n.startsWith("s")?l=o/60:n.startsWith("h")?l=60*o:n.startsWith("d")&&(l=1440*o),l<=0)return void alert("Длительность таймера должна быть больше 0");let c=Array.isArray(null===(t=this._config)||void 0===t?void 0:t.timer_buttons)?[...this._config.timer_buttons]:[],d=e;if(i[2]||(d=o),c.includes(d))return this._newTimerButtonValue="",void this.requestUpdate();c.push(d);const h=c.filter(t=>"number"==typeof t),u=c.filter(t=>"string"==typeof t);h.sort((t,e)=>t-e),u.sort((t,e)=>t.localeCompare(e,void 0,{numeric:!0,sensitivity:"base"})),c=[...h,...u],this._updateConfig({timer_buttons:c}),this._newTimerButtonValue="",this.requestUpdate()}_removeTimerButton(t){var e;let i=Array.isArray(null===(e=this._config)||void 0===e?void 0:e.timer_buttons)?[...this._config.timer_buttons]:[];i=i.filter(e=>e!==t),this._updateConfig({timer_buttons:i})}_updateConfig(t){const e=Object.assign(Object.assign({},this._config),t);this._config=e,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0})),this.requestUpdate()}_mainSchema(){return[{name:"card_title",selector:{text:{}}},{name:"entity_state_icon",selector:{icon:{}}},{name:"countdown_display",selector:{select:{mode:"dropdown",options:[{value:"countdown",label:"Обратный отсчёт"},{value:"progress",label:"Шкала прогресса"},{value:"both",label:"Отсчёт + шкала прогресса"}]}}},{name:"",type:"grid",schema:[{name:"slider_max",selector:{number:{min:1,max:9999,step:1,mode:"box"}}},{name:"slider_unit",selector:{select:{mode:"dropdown",options:[{value:"sec",label:"Секунды (с)"},{value:"min",label:"Минуты (мин)"},{value:"hr",label:"Часы (ч)"},{value:"day",label:"Дни (д)"}]}}}]}]}_formChanged(t){var e;t.stopPropagation();const i=Object.assign({},(null===(e=t.detail)||void 0===e?void 0:e.value)||{}),o=Object.assign({},this._config);if("card_title"in i&&(i.card_title&&""!==i.card_title?o.card_title=i.card_title:delete o.card_title,delete i.card_title),"entity_state_icon"in i&&(o.entity_state_icon=i.entity_state_icon&&""!==i.entity_state_icon?i.entity_state_icon:null,delete i.entity_state_icon),"slider_max"in i){let t=Number(i.slider_max);(!Number.isFinite(t)||t<1||t>9999)&&(t=120),t=Math.trunc(t),o.slider_max=t,o.timer_buttons=[...this._config.timer_buttons||[]].filter(e=>"number"!=typeof e||e<=t),delete i.slider_max}if(Object.assign(o,i),JSON.stringify(this._config)===JSON.stringify(o))return;this._config=o;const s=Object.assign({},o);delete s.notification_entity,delete s.show_seconds,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:s},bubbles:!0,composed:!0})),this.requestUpdate()}render(){var t,e,i,o,s,n,r,a,l,c,d,h,u,p,_,g,m,v,f,b,y,x,w,$,S,C,k,T,E,A,P;if(!this.hass)return H``;const I=this._timerInstancesOptions||[],M=[{value:"",label:"None"}];I.length>0?M.push(...I):M.push({value:"none_found",label:"Экземпляры Simple Timer не найдены"});let D=!1,L="";if((null===(t=this._config)||void 0===t?void 0:t.timer_instance_id)&&this.hass&&this.hass.states){const t=Object.values(this.hass.states).find(t=>t.entity_id.startsWith("sensor.")&&t.attributes.entry_id===this._config.timer_instance_id);if(t&&t.attributes.default_timer_enabled){D=!0;L=`(${t.attributes.default_timer_duration}${t.attributes.default_timer_unit||"min"})`}}const O=this._getThemeColorHex("--secondary-background-color","#424242"),U=this._getThemeColorHex("--primary-text-color","#ffffff"),V=this._getThemeColorHex("--secondary-background-color","#424242"),B=this._getThemeColorHex("--secondary-background-color","#424242"),R=this._getThemeColorHex("--primary-color","#03a9f4"),j=this._getThemeColorHex("--ha-card-background",this._getThemeColorHex("--card-background-color","#1c1c1c")),N=this._getThemeColorHex("--secondary-text-color","#727272"),z=this._getThemeColorHex("--ha-card-background",this._getThemeColorHex("--card-background-color","#1c1c1c")),W=this._getThemeColorHex("--primary-color","#03a9f4");return H`
+      <div class="card-config">
+        <div class="config-row">
+          <ha-select
+            .label=${"Выберите экземпляр Simple Timer"}
+            .value=${(null===(e=this._config)||void 0===e?void 0:e.timer_instance_id)||""}
+            .options=${M}
+            @selected=${this._instanceSelected}
+            @closed=${t=>t.stopPropagation()}
+            fixedMenuPosition
+            naturalMenuWidth
+            required
+          >
+            ${M.map(t=>H`
+              <mwc-list-item .value=${t.value}>${t.label}</mwc-list-item>
+            `)}
+          </ha-select>
+        </div>
+
+        <ha-form
+          .hass=${this.hass}
+          .data=${this._config}
+          .schema=${this._mainSchema()}
+          .computeLabel=${this._computeLabel}
+          @value-changed=${this._formChanged}
+        ></ha-form>
+
+        <ha-expansion-panel outlined style="margin-top: 16px; margin-bottom: 16px;">
+          <div slot="header" style="display: flex; align-items: center;">
+            <ha-icon icon="mdi:palette-outline" style="margin-right: 8px;"></ha-icon>
+            Внешний вид
+          </div>
+          <div class="content" style="padding: 12px; margin-top: 12px;">
+            <div class="config-row">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <!-- Цвет бегунка ползунка -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(i=this._config)||void 0===i?void 0:i.slider_thumb_color)||"#2ab69c"}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"slider_thumb_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Цвет бегунка ползунка</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(o=this._config)||void 0===o?void 0:o.slider_thumb_color)||""} .configValue=${"slider_thumb_color"} @input=${this._valueChanged} /></label>
+                </div>
+                
+                <!-- Цвет фона ползунка -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(s=this._config)||void 0===s?void 0:s.slider_background_color)||O}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"slider_background_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Цвет фона ползунка</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(n=this._config)||void 0===n?void 0:n.slider_background_color)||""} .configValue=${"slider_background_color"} @input=${this._valueChanged} /></label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="config-row">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <!-- Цвет текста кнопок таймера -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(r=this._config)||void 0===r?void 0:r.timer_button_font_color)||U}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"timer_button_font_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Цвет текста кнопок таймера</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(a=this._config)||void 0===a?void 0:a.timer_button_font_color)||""} .configValue=${"timer_button_font_color"} @input=${this._valueChanged} /></label>
+                </div>
+                
+                <!-- Цвет фона кнопок таймера -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(l=this._config)||void 0===l?void 0:l.timer_button_background_color)||V}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"timer_button_background_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Цвет фона кнопок таймера</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(c=this._config)||void 0===c?void 0:c.timer_button_background_color)||""} .configValue=${"timer_button_background_color"} @input=${this._valueChanged} /></label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="config-row">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <!-- Фон кнопки управления таймером Color -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(d=this._config)||void 0===d?void 0:d.power_button_background_color)||B}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"power_button_background_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Фон кнопки управления таймером</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(h=this._config)||void 0===h?void 0:h.power_button_background_color)||""} .configValue=${"power_button_background_color"} @input=${this._valueChanged} /></label>
+                </div>
+                
+                <!-- Цвет иконки управления таймером -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(u=this._config)||void 0===u?void 0:u.power_button_icon_color)||R}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"power_button_icon_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Цвет иконки управления таймером</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(p=this._config)||void 0===p?void 0:p.power_button_icon_color)||""} .configValue=${"power_button_icon_color"} @input=${this._valueChanged} /></label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- NEW: Entity State Button Colors -->
+            <div class="config-row">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <!-- Entity State Button Background Color -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(_=this._config)||void 0===_?void 0:_.entity_state_button_background_color)||j}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"entity_state_button_background_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Фон иконки состояния (выключено)</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(g=this._config)||void 0===g?void 0:g.entity_state_button_background_color)||""} .configValue=${"entity_state_button_background_color"} @input=${this._valueChanged} /></label>
+                </div>
+                
+                
+                <!-- Entity State Button Icon Color -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(m=this._config)||void 0===m?void 0:m.entity_state_button_icon_color)||N}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"entity_state_button_icon_color",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Цвет иконки состояния (выключено)</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(v=this._config)||void 0===v?void 0:v.entity_state_button_icon_color)||""} .configValue=${"entity_state_button_icon_color"} @input=${this._valueChanged} /></label>
+                </div>
+
+                <!-- Entity State Button Background Color (On) -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(f=this._config)||void 0===f?void 0:f.entity_state_button_background_color_on)||z}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"entity_state_button_background_color_on",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Фон иконки состояния (включено)</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(b=this._config)||void 0===b?void 0:b.entity_state_button_background_color_on)||""} .configValue=${"entity_state_button_background_color_on"} @input=${this._valueChanged} /></label>
+                </div>
+
+                <!-- Entity State Button Icon Color (On) -->
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <input
+                    type="color"
+                    value=${(null===(y=this._config)||void 0===y?void 0:y.entity_state_button_icon_color_on)||W}
+                    @input=${t=>{const e=t.target;this._valueChanged({target:{configValue:"entity_state_button_icon_color_on",value:e.value},stopPropagation:()=>{}})}}
+                    style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer; flex-shrink: 0;"
+                  />
+                  <label style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;"><span class="ht-color-label">Цвет иконки состояния (включено)</span><input class="ht-input" type="text" placeholder="По умолчанию из темы" .value=${(null===(x=this._config)||void 0===x?void 0:x.entity_state_button_icon_color_on)||""} .configValue=${"entity_state_button_icon_color_on"} @input=${this._valueChanged} /></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ha-expansion-panel>
+        
+        <div class="config-row">
+          <ha-formfield .label=${"Выключать устройство при отмене таймера"}>
+            <ha-switch
+              .checked=${!1!==(null===(w=this._config)||void 0===w?void 0:w.turn_off_on_cancel)}
+              .configValue=${"turn_off_on_cancel"}
+              @change=${this._valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="config-row">
+          <ha-formfield .label=${"Обратный режим (отложенный запуск)"+(D?" (Disabled)":"")}>
+            <ha-switch
+              .checked=${!!(null===($=this._config)||void 0===$?void 0:$.reverse_mode)&&!D}
+              .configValue=${"reverse_mode"}
+              @change=${this._valueChanged}
+              .disabled=${D}
+            ></ha-switch>
+          </ha-formfield>
+          ${D?H`
+            <div class="helper-text" style="color: var(--warning-color, orange); margin-top: 4px;">
+              Disabled because a
+              <span
+                @click=${t=>this._navigate(t,"/config/integrations/integration/simple_timer")}
+                style="color: inherit; text-decoration: underline; font-weight: bold; cursor: pointer;">
+                Default Timer
+              </span>
+              is configured ${L}.
+            </div>
+          `:""}
+        </div>
+
+        <div class="config-row">
+          <ha-formfield .label=${"Скрыть ползунок таймера"}>
+            <ha-switch
+              .checked=${(null===(S=this._config)||void 0===S?void 0:S.hide_slider)||!1}
+              .configValue=${"hide_slider"}
+              @change=${this._valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="config-row">
+          <ha-formfield .label=${"Показывать суточное время работы"}>
+            <ha-switch
+              .checked=${!1!==(null===(C=this._config)||void 0===C?void 0:C.show_daily_usage)}
+              .configValue=${"show_daily_usage"}
+              @change=${this._valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="config-row">
+          <ha-formfield .label=${"Показывать расписание"}>
+            <ha-switch
+              .checked=${(null===(k=this._config)||void 0===k?void 0:k.show_schedule)||!1}
+              .configValue=${"show_schedule"}
+              @change=${this._valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+      </div>
+
+        <div class="config-row">
+            <div class="timer-chips-container">
+             <label class="config-label">Предустановки таймера</label>
+             <div class="chips-wrapper">
+                ${((null===(T=this._config)||void 0===T?void 0:T.timer_buttons)||gt).map(t=>{const e=String(t).replace("*","");return H`
+                    <div class="timer-chip">
+                        <span>${"number"==typeof t?t+"m":e}</span>
+                        <span class="remove-chip" @click=${()=>this._removeTimerButton(t)}>✕</span>
+                    </div>
+                `})}
+             </div>
+            </div>
+            
+            <div class="add-timer-row">
+               <input
+                  class="ht-field"
+                  type="text"
+                  placeholder="Добавить таймер (например: 30s, 10m, 1h)"
+                  .value=${this._newTimerButtonValue}
+                  @input=${this._handleNewTimerInput}
+                  @keypress=${t=>{"Enter"===t.key&&this._addTimerButton()}}
+                  style="flex: 1;"
+               />
+               <div class="add-btn" @click=${this._addTimerButton} role="button">ADD</div>
+            </div>
+            <div class="helper-text" style="font-size: 0.8em; color: var(--secondary-text-color); margin-top: 4px;">
+                Поддерживаются секунды (s), минуты (m), часы (h), дни (d). Пример: 30s, 10, 1.5h, 1d.
+            </div>
+        </div>
+          ${!(null===(A=null===(E=this._config)||void 0===E?void 0:E.timer_buttons)||void 0===A?void 0:A.length)&&(null===(P=this._config)||void 0===P?void 0:P.hide_slider)?H`
+            <p class="info-text">ℹ️ No timer presets logic and the Slider is also hidden. The card will not be able to set a duration.</p>
+          `:""}
+        </div>
+      </div>
+    `}_instanceSelected(t){var e,i,o;t.stopPropagation();const s=null!==(i=null===(e=t.detail)||void 0===e?void 0:e.value)&&void 0!==i?i:null===(o=t.target)||void 0===o?void 0:o.value;s&&"none_found"!==s&&""!==s?this._updateConfig({timer_instance_id:s}):this._updateConfig({timer_instance_id:null})}_valueChanged(t){t.stopPropagation();const e=t.target;if(!this._config||!e.configValue)return;const i=e.configValue;let o;if(void 0!==e.checked)o=e.checked;else if(void 0!==e.selected)o=e.value;else{if(void 0===e.value)return;o=e.value}const s=Object.assign({},this._config);if("card_title"===i?o&&""!==o?s.card_title=o:delete s.card_title:"timer_instance_id"===i?s.timer_instance_id=o&&"none_found"!==o&&""!==o?o:null:"show_daily_usage"===i?s.show_daily_usage=o:"hide_slider"===i?s.hide_slider=o:"reverse_mode"===i?s.reverse_mode=o:"show_schedule"===i?s.show_schedule=o:"slider_unit"===i?s.slider_unit=o:"turn_off_on_cancel"===i?s.turn_off_on_cancel=o:o&&""!==o?s[i]=o:["entity_state_icon","power_button_icon","slider_thumb_color","slider_background_color","timer_button_font_color","timer_button_background_color","power_button_background_color","power_button_icon_color","entity_state_button_background_color","entity_state_button_icon_color","entity_state_button_background_color_on","entity_state_button_icon_color_on"].includes(i)?s[i]=null:delete s[i],JSON.stringify(this._config)!==JSON.stringify(s)){this._config=s;const t=Object.assign({},s);delete t.notification_entity,delete t.show_seconds,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:t},bubbles:!0,composed:!0})),this.requestUpdate()}}_navigate(t,e){t.stopPropagation(),t.preventDefault(),this.dispatchEvent(new CustomEvent("close-dialog",{bubbles:!0,composed:!0}));try{let t=this;for(;t;){if("HA-DIALOG"===t.tagName||"MWC-DIALOG"===t.tagName){"function"==typeof t.close&&t.close();break}if(t.parentNode)t=t.parentNode;else{if(!t.host)break;t=t.host}}}catch(t){console.warn("TimerCardEditor: Failed to force close dialog",t)}history.pushState(null,"",e);const i=new Event("location-changed",{bubbles:!0,composed:!0});window.dispatchEvent(i)}static get styles(){return ut}}mt.properties={hass:{type:Object},_config:{type:Object},_newTimerButtonValue:{type:String}},customElements.get("timer-card-editor")||customElements.define("timer-card-editor",mt);var vt=Object.freeze({__proto__:null});
+//# sourceMappingURL=timer-card.js.map
