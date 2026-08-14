@@ -6,7 +6,7 @@
 > интеграции, карточки и визуального редактора.
 
 ![Simple
-Timer](https://github.com/ArikShemesh/ha-simple-timer/blob/main/custom_components/simple_timer/brands/simple_timer/logo.png)
+Timer](https://github.com/ProshkinM/ha-simple-timer/blob/main/custom_components/simple_timer/brands/simple_timer/logo.png)
 
 [![GitHub
 Release](https://img.shields.io/github/v/release/ProshkinM/ha-simple-timer-ru)](https://github.com/ProshkinM/ha-simple-timer-ru/releases)
@@ -21,12 +21,12 @@ Project](https://img.shields.io/badge/Original-ArikShemesh%2Fha--simple--timer-b
 [ArikShemesh/ha-simple-timer](https://github.com/ArikShemesh/ha-simple-timer).
 
 ![Панель Simple
-Timer](https://github.com/ArikShemesh/ha-simple-timer/blob/main/images/simple_timer_dashboard.png)
+Timer](https://github.com/ProshkinM/ha-simple-timer/blob/main/images/simple_timer_dashboard.png)
 
 ### Настройка карточки
 
 ![Настройка Simple Timer
-Card](https://github.com/ArikShemesh/ha-simple-timer/blob/main/images/simple_timer_card_configuration.png)
+Card](https://github.com/ProshkinM/ha-simple-timer/blob/main/images/simple_timer_card_configuration.png)
 
 ## 🇷🇺 Особенности русской версии
 
