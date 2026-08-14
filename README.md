@@ -1,165 +1,248 @@
-[Русская версия README](README_RU.md)
+# HA Simple Timer --- интеграция и карточка для Home Assistant
 
-![image](https://github.com/ArikShemesh/ha-simple-timer/blob/main/custom_components/simple_timer/brands/simple_timer/logo.png)
+> 🇷🇺 Русский форк оригинального проекта **HA Simple Timer** от
+> ArikShemesh.\
+> Основное отличие этого форка --- русская локализация интерфейса
+> интеграции, карточки и визуального редактора.
 
-[![GitHub Release](https://img.shields.io/github/v/release/arikshemesh/ha-simple-timer)](https://github.com/arikshemesh/ha-simple-timer/releases)
-[![Downloads](https://img.shields.io/github/downloads/arikshemesh/ha-simple-timer/total.svg)](https://github.com/arikshemesh/ha-simple-timer/releases)
-[![Community Forum](https://img.shields.io/badge/Community-Forum-5294E2.svg)](https://community.home-assistant.io/t/custom-integration-simple-timer-card/919597)
+![Simple
+Timer](https://github.com/ArikShemesh/ha-simple-timer/blob/main/custom_components/simple_timer/brands/simple_timer/logo.png)
 
-# HA Simple Timer Integration (+ Card)
-A simple Home Assistant integration that turns entities on and off with a precise countdown timer and daily runtime tracking.
+[![GitHub
+Release](https://img.shields.io/github/v/release/ProshkinM/ha-simple-timer-ru)](https://github.com/ProshkinM/ha-simple-timer-ru/releases)
+[![Downloads](https://img.shields.io/github/downloads/ProshkinM/ha-simple-timer-ru/total.svg)](https://github.com/ProshkinM/ha-simple-timer-ru/releases)
+[![Original
+Project](https://img.shields.io/badge/Original-ArikShemesh%2Fha--simple--timer-blue)](https://github.com/ArikShemesh/ha-simple-timer)
 
-<a href="https://coff.ee/codemakor" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+Простая интеграция Home Assistant для управления устройствами с помощью
+точного таймера обратного отсчёта и учёта ежедневного времени работы.
 
-![image](https://github.com/ArikShemesh/ha-simple-timer/blob/main/images/simple_timer_dashboard.png)
+Этот репозиторий является форком оригинального проекта:
+[ArikShemesh/ha-simple-timer](https://github.com/ArikShemesh/ha-simple-timer).
 
-### Configuration
-![image](https://github.com/ArikShemesh/ha-simple-timer/blob/main/images/simple_timer_card_configuration.png)
+![Панель Simple
+Timer](https://github.com/ArikShemesh/ha-simple-timer/blob/main/images/simple_timer_dashboard.png)
 
-## ✨ Key Features
-🚀 **Out-of-the-box**, pre-packaged timer solution, eliminating manual creation of multiple Home Assistant entities, sensors, and automations.
+### Настройка карточки
 
-🕐 Flexible Timer Control - Set countdown timers in seconds, minutes, hours, or days for any switch, input_boolean, light, fan, or climate entity
+![Настройка Simple Timer
+Card](https://github.com/ArikShemesh/ha-simple-timer/blob/main/images/simple_timer_card_configuration.png)
 
-❄️ **Native Climate Support** - Point a timer straight at an A/C or heat pump and pick the mode it should run in, no helper entity, no automation
+## 🇷🇺 Особенности русской версии
 
-⚡ **Default Timer** - Automatically starts a countdown when the device is turned on manually (Auto-Off functionality)
+В этом форке добавлена русская локализация:
 
-📊 **Daily Runtime Tracking** - Automatically tracks and displays daily usage time
+-   интерфейса карточки Simple Timer;
+-   визуального редактора карточки;
+-   подписей кнопок и элементов управления;
+-   панели расписания;
+-   сообщений об ошибках и подсказок;
+-   мастера настройки интеграции Home Assistant.
 
-🔄 **Smart Auto-Cancel** - Timer automatically cancels if the controlled device is turned off externally
+При использовании русского языка в Home Assistant отображается русская
+локализация. Технические YAML-параметры, идентификаторы сервисов и
+единицы измерения сохранены без изменений для совместимости с
+оригинальной интеграцией.
 
-🎨 **Professional Timer Card** - Beautiful, modern UI with customizable timer buttons and real-time countdown
+## ✨ Основные возможности
 
-🔔 **Notification Support** - Optional notifications for timer start, finish, and cancellation events
+🚀 **Готовое решение из коробки** --- не требуется вручную создавать
+множество вспомогательных сущностей, сенсоров и автоматизаций Home
+Assistant.
 
-🌙 **Midnight Reset** - Daily usage statistics reset automatically at midnight
+🕐 **Гибкое управление таймером** --- устанавливайте таймер в секундах,
+минутах, часах или днях для `switch`, `input_boolean`, `light`, `fan` и
+`climate`.
 
-👆 Manual Usage Reset - Long-press the daily usage display to reset statistics manually
+❄️ **Нативная поддержка Climate** --- таймер можно назначить
+непосредственно кондиционеру или тепловому насосу и выбрать режим, в
+котором устройство должно работать. Вспомогательные сущности и
+автоматизации не требуются.
 
-⏰ **Delayed Start Timers** - Turns devices ON when timer completes and keeps them on indefinitely until manually turned off
+⚡ **Таймер по умолчанию** --- автоматически запускает обратный отсчёт
+при ручном включении устройства. Удобно для автоматического отключения.
 
-⏱️ **Schedule Timer** - Start a timer at a chosen time of day (one-shot or recurring on selected days). Survives restarts. Optional, enabled per-card.
+📊 **Учёт времени работы за день** --- автоматически подсчитывает и
+отображает суммарное время работы устройства.
 
-➕ **Extend Timer** - Add time to actively running timers on the fly without restarting
+🔄 **Автоматическая отмена** --- если управляемое устройство выключено
+извне, активный таймер автоматически отменяется.
 
-## 🏠 Perfect For
+🎨 **Карточка таймера** --- современный интерфейс с настраиваемыми
+кнопками времени и отображением обратного отсчёта в реальном времени.
 
-- **Water Heater Control** - Manage boiler schedules  
-- **Kitchen Timers** - Control smart switches for appliances
-- **Garden Irrigation** - Time watering systems
-- **Lighting Control** - Automatic light timers
-- **Fan Control** - Bathroom or ventilation fans
-- **A/C and Heat Pumps** - Run a climate entity in a chosen mode and switch it off on time
-- **Any Timed Device** - Universal timer for any switchable device
+🔔 **Уведомления** --- можно включить уведомления о запуске, завершении
+и отмене таймера.
 
-## 📦 Installation
+🌙 **Сброс в полночь** --- статистика ежедневного использования
+автоматически сбрасывается в 00:00.
 
-### HACS (Recommended)
+👆 **Ручной сброс статистики** --- длительное нажатие на показатель
+времени работы позволяет сбросить статистику вручную.
 
-Use this link to open the repository in HACS and click on Download
+⏰ **Отложенный запуск** --- устройство включается после окончания
+обратного отсчёта и продолжает работать до ручного выключения.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ArikShemesh&repository=ha-simple-timer)
+⏱️ **Расписание** --- можно запустить таймер в заданное время один раз
+или повторять запуск в выбранные дни недели. Расписание сохраняется
+после перезапуска Home Assistant.
 
-⚠️ If you previously added this integration as a custom repository in HACS, it's recommended to remove the custom entry and reinstall it from the official HACS store.
-You will continue to receive updates in both cases, but switching ensures you're aligned with the official listing and avoids potential issues in the future.
+➕ **Продление таймера** --- время можно добавить к уже работающему
+таймеру без его перезапуска.
 
-### Manual Installation
-1. Download the latest release from [GitHub Releases](https://github.com/ArikShemesh/ha-simple-timer/releases)
-2. Extract the `custom_components/simple_timer` folder to your Home Assistant `custom_components` directory
-3. **Restart Home Assistant**
-4. **Note:** You do **NOT** need to add the dashboard resource manually. It is automatically registered when the integration starts.
+## 🏠 Для чего можно использовать
 
-**That's it!** The timer card is automatically installed and ready to use.
+-   **Бойлер / водонагреватель** --- управление временем нагрева.
+-   **Кухонные устройства** --- управление розетками и бытовой техникой.
+-   **Полив** --- ограничение времени работы системы орошения.
+-   **Освещение** --- автоматическое отключение света.
+-   **Вентиляторы** --- управление вентиляцией ванной комнаты и других
+    помещений.
+-   **Кондиционер / тепловой насос** --- запуск выбранного HVAC-режима
+    на заданное время.
+-   **Другие устройства** --- практически любое устройство, которым
+    можно управлять через поддерживаемую сущность Home Assistant.
 
-## ⚙️ Configuration
+## 📦 Установка
 
-### Add Integration Instance
-1. Go to **Settings → Devices & Services**
-2. Click **"Add Integration"**
-3. Search for **"Simple Timer"**
-4. Select the device you want to control (switch, light, fan, input_boolean, climate)
-5. Give your timer instance a descriptive name (e.g., "Kitchen Timer", "Water Heater")
-6. **Climate entities only:** choose the mode to use when turning on (Heat, Cool, Dry, …). The list comes from the entity itself, and only that mode is applied - the timer always switches the device off at the end
-7. Choose notification entitiy (optional) - can be add more than one
-8. Check show seconds (optional) - display seconds in uasge time and notifications
+### HACS --- рекомендуемый способ
 
-> A climate entity that offers no **off** mode cannot be selected - a timer that
-> cannot turn the device off again would be worse than no timer.
+1.  Откройте **HACS**.
+2.  Перейдите в раздел интеграций.
+3.  Откройте меню и выберите добавление пользовательского репозитория.
+4.  Укажите:
 
-### Add Timer Card to Dashboard
-1. **Edit your dashboard**
-2. **Add a card**
-3. Search for **"Simple Timer Card"** (should appear in the card picker)
-4. **Configure the card:**
-   - Select your timer instance
-   - Customize timer buttons
-   - Add a custom card title (optional)
-   - Enable **Show Schedule Panel** to let users schedule a future start (off by default)
-  
-## 🔄 Renaming Timer Instances
-
-### ✅ Recommended Method
-1. Go to **Settings → Devices & Services**  
-2. Find your Simple Timer integration
-3. Click **Configure** (⚙️ gear icon)
-4. Change the name and save
-
-### 💡 Note on 3-Dots Rename
-If you use the 3-dots menu to rename, open **Configure** once afterward to sync the change.
-
-## ⏱️ Schedule Timer
-
-Enable **Show Schedule Panel** in the card editor to add a collapsible "Schedule Timer" panel:
-
-- Pick a **start time** and **run-for** duration (free input + quick-fill from your preset buttons).
-- **One-shot** (next occurrence) or **Repeat** on selected days of the week.
-- Once set, the card shows a banner ("Starts … · runs …"); ✕ cancels it.
-- Survives Home Assistant restarts. On a reverse-mode card, the schedule runs as a normal bounded timer (start at the time, auto-off after the duration).
-
-Disabled by default - existing cards are unchanged until you turn it on.
-
-## 📜 History & Activity
-
-Each timer instance exposes a **Status** sensor (`sensor.<name>_status_<id>`) alongside the runtime sensor. Its state is one of `idle`, `active`, `delayed_start`, or `scheduled`.
-
-This is what makes the timer show up in Home Assistant's **logbook** and in the **Activity** feed on the device page. The runtime sensor cannot do that job: it reports a number of seconds, and the logbook deliberately skips numeric sensors so it isn't flooded with readings.
-
-Entries read naturally and name whoever triggered them:
-
-```
-9:08 PM   Water Heater   started for 30 minutes by Alex
-9:05 PM   Water Heater   finished - device turned off, daily usage 45 minutes
-6:00 AM   Water Heater   scheduled for 18:00 (30 minutes), repeating by Alex
+``` text
+https://github.com/ProshkinM/ha-simple-timer-ru
 ```
 
-Actions the integration takes on its own - a timer expiring, a schedule firing - are intentionally left unattributed rather than credited to the person who set them up hours earlier.
+5.  Тип репозитория: **Integration**.
+6.  Установите **Simple Timer**.
+7.  Полностью перезапустите Home Assistant.
 
-### Opening history from the card
+После запуска интеграция автоматически регистрирует JavaScript-ресурс
+карточки. В обычной ситуации вручную добавлять ресурс панели не
+требуется.
 
-**Press and hold the countdown display** (or the progress bar) for about a second. This opens the status entity's more-info dialog, showing its state timeline and logbook.
+### Ручная установка
 
-There is no icon for this - it's a hidden gesture, so it's worth knowing it exists. It works in every countdown display mode, since the hold is bound to the countdown text and the progress bar alike.
+1.  Скачайте последний релиз со страницы
+    [Releases](https://github.com/ProshkinM/ha-simple-timer-ru/releases).
+2.  Скопируйте папку `custom_components/simple_timer` в каталог
+    `custom_components` вашего Home Assistant.
+3.  Убедитесь, что итоговый путь выглядит так:
 
-## 🎛️ Card Configuration
+``` text
+/config/custom_components/simple_timer/
+```
 
-### Visual Configuration (Recommended)
-Use the card editor in the Home Assistant UI for easy configuration.
+4.  Перезапустите Home Assistant.
 
-### Full Configuration Reference
-Copy this block to your dashboard configuration and uncomment/edit the lines you need.
+Карточка устанавливается вместе с интеграцией.
 
-```yaml
+## ⚙️ Настройка интеграции
+
+### Добавление таймера
+
+1.  Откройте **Настройки → Устройства и службы**.
+2.  Нажмите **Добавить интеграцию**.
+3.  Найдите **Simple Timer**.
+4.  Выберите устройство, которым нужно управлять: `switch`, `light`,
+    `fan`, `input_boolean` или `climate`.
+5.  Задайте понятное имя таймера, например «Бойлер» или «Вентилятор
+    ванной».
+6.  Для `climate` выберите режим, который должен использоваться при
+    включении: Heat, Cool, Dry и т. д.
+7.  При необходимости выберите одну или несколько сущностей уведомлений.
+8.  При необходимости включите отображение секунд.
+
+> Сущность `climate`, не имеющая режима `off`, выбрать нельзя: таймер
+> должен иметь возможность гарантированно выключить устройство.
+
+## 🖥️ Добавление карточки
+
+1.  Перейдите на нужную панель Home Assistant.
+2.  Включите режим редактирования.
+3.  Нажмите **Добавить карточку**.
+4.  Найдите **Simple Timer Card**.
+5.  Выберите созданный экземпляр таймера.
+6.  Настройте кнопки времени, заголовок и остальные параметры.
+7.  При необходимости включите панель расписания.
+
+Минимальная YAML-конфигурация:
+
+``` yaml
 type: custom:timer-card
-# -------------------------------------------------------------------------
-# REQUIRED: Link to your timer instance
-# -------------------------------------------------------------------------
-timer_instance_id: your_timer_entry_id  # Select the integration entry ID
+timer_instance_id: your_timer_entry_id
+```
 
-# -------------------------------------------------------------------------
-# TIMER SETTINGS
-# -------------------------------------------------------------------------
-# Presets: Use numbers (minutes) or strings with units ("30s", "1h", "1d").
+## 🔄 Переименование таймера
+
+Рекомендуемый способ:
+
+1.  Откройте **Настройки → Устройства и службы**.
+2.  Найдите интеграцию Simple Timer.
+3.  Нажмите **Настроить**.
+4.  Измените имя и сохраните настройки.
+
+Если вы переименовали интеграцию через меню с тремя точками, после этого
+один раз откройте **Настроить**, чтобы синхронизировать изменение.
+
+## ⏱️ Расписание
+
+В редакторе карточки включите параметр отображения панели расписания.
+
+Можно:
+
+-   выбрать время запуска;
+-   задать продолжительность работы;
+-   быстро подставить продолжительность из настроенных кнопок таймера;
+-   выполнить запуск один раз;
+-   повторять запуск в выбранные дни недели;
+-   отменить установленное расписание.
+
+После настройки карточка показывает информацию о ближайшем запуске.
+Расписание сохраняется после перезапуска Home Assistant.
+
+По умолчанию панель расписания отключена, поэтому существующие карточки
+после обновления не изменяются.
+
+## 📜 История и активность
+
+Каждый экземпляр таймера создаёт сенсор состояния вида:
+
+``` text
+sensor.<name>_status_<id>
+```
+
+Его состояние может быть:
+
+-   `idle` --- таймер неактивен;
+-   `active` --- таймер работает;
+-   `delayed_start` --- ожидается отложенный запуск;
+-   `scheduled` --- установлено расписание.
+
+Благодаря этому действия таймера отображаются в журнале Home Assistant и
+в ленте активности устройства.
+
+### Просмотр истории из карточки
+
+Нажмите и удерживайте область обратного отсчёта или индикатор прогресса
+примерно одну секунду.
+
+Откроется окно дополнительной информации сенсора состояния с историей и
+журналом событий.
+
+## 🎛️ Полная конфигурация карточки
+
+``` yaml
+type: custom:timer-card
+
+# ОБЯЗАТЕЛЬНО:
+timer_instance_id: your_timer_entry_id
+
+# Кнопки таймера.
+# Числа без единицы измерения означают минуты.
 timer_buttons:
   - 15
   - 30
@@ -167,27 +250,34 @@ timer_buttons:
   - 1h
   - 2d
 
-# reverse_mode will always take priority if both are set to true.
-reverse_mode: false           # If true, timer works as "Delayed Start" (turns ON when time ends)
-turn_off_on_cancel: true      # Turn off the device when timer is cancelled?
+# Режим отложенного запуска.
+reverse_mode: false
 
-# -------------------------------------------------------------------------
-# SLIDER & DISPLAY
-# -------------------------------------------------------------------------
-card_title: "Water Heater"    # Custom title
-hide_slider: false            # Set true to hide the slider
-show_daily_usage: true        # Show/Hide the daily usage stats
-show_schedule: false          # Show the "Schedule Timer" panel on the card
-slider_max: 120               # Maximum value for the slider
-slider_unit: min              # Unit for slider: 's', 'min', 'h', 'd'
+# Выключать устройство при отмене таймера.
+turn_off_on_cancel: true
 
-# -------------------------------------------------------------------------
-# STYLING (Optional)
-# -------------------------------------------------------------------------
-# Icons
+# Заголовок карточки.
+card_title: "Бойлер"
+
+# Скрыть ползунок.
+hide_slider: false
+
+# Показывать статистику использования за день.
+show_daily_usage: true
+
+# Показывать панель расписания.
+show_schedule: false
+
+# Максимальное значение ползунка.
+slider_max: 120
+
+# Единица измерения: s, min, h или d.
+slider_unit: min
+
+# Необязательная иконка.
 entity_state_icon: mdi:lightbulb
 
-# Colors (Hex or RGBA)
+# Необязательные цвета.
 slider_thumb_color: "#2ab69c"
 slider_background_color: "#424242"
 timer_button_font_color: "#ffffff"
@@ -200,194 +290,321 @@ entity_state_button_icon_color_on: "#03a9f4"
 entity_state_button_background_color_on: "#1c1c1c"
 ```
 
-### Configuration Options
+## 📋 Параметры карточки
 
-Option | Type | Default | Description
----|---|---|---
-`type` | string | - | Must be `custom:timer-card`
-`timer_instance_id` | string | - | Entry ID of your timer instance
-`timer_buttons` | array | [15,30,60,90,120,150] | Timer duration buttons. Supports mixed units (e.g., `[30, "15s", "1.5h", "1day"]`)
-`card_title` | string | - | Custom title for the card
-`slider_max` | integer | 120 | The maximum value for the slider (supported range: 1–9999)
-`slider_unit` | string | min | Unit for the slider (`s`, `min`, `h`)
-`reverse_mode` | boolean | false | Enable delayed start (turns device ON when timer ends). `Note: Disabled if Default Timer is enabled for this entity.`
-`hide_slider` | boolean | false | Hide the slider control completely
-`show_daily_usage` | boolean | true | Display daily usage statistics
-`show_schedule` | boolean | false | Show the "Schedule Timer" panel (future-start scheduling)
-`turn_off_on_cancel` | boolean | true | Whether to turn off the entity when the timer is cancelled
-`slider_thumb_color` | string | - | Custom color for the slider thumb (hex or rgba)
-`slider_background_color` | string | - | Custom color for the slider track
-`timer_button_font_color` | string | - | Custom font color for timer buttons
-`timer_button_background_color` | string | - | Custom background color for timer buttons
-`power_button_background_color` | string | - | Custom background color for the power button
-`power_button_icon_color` | string | - | Custom icon color for the power button
-`entity_state_icon` | string | - | Custom icon for the state button (top-left)
-`entity_state_button_icon_color` | string | - | Custom icon color for the entity state button (top-left)
-`entity_state_button_icon_color_on` | string | - | Custom icon color for the entity state button when ON
-`entity_state_button_background_color` | string | - | Custom background color for the entity state button (top-left)
-`entity_state_button_background_color_on` | string | - | Custom background color for the entity state button when ON
+  -------------------------------------------------------------------------------------------------------------
+  Параметр                                    Тип               По умолчанию              Описание
+  ------------------------------------------- ----------------- ------------------------- ---------------------
+  `type`                                      string            ---                       Должно быть
+                                                                                          `custom:timer-card`
 
-## ❓ Frequently Asked Questions
+  `timer_instance_id`                         string            ---                       ID экземпляра
+                                                                                          интеграции
 
-### Can I have multiple timer instances?
-Yes! Add multiple integrations for different devices.
+  `timer_buttons`                             array             `[15,30,60,90,120,150]`   Кнопки
+                                                                                          продолжительности
+                                                                                          таймера;
+                                                                                          поддерживаются разные
+                                                                                          единицы
 
-### Does the timer work if Home Assistant restarts?
-Yes, active timers resume automatically with offline time compensation. Scheduled starts also survive restarts (recurring schedules re-arm; a missed one-shot is dropped).
+  `card_title`                                string            ---                       Пользовательский
+                                                                                          заголовок
 
-### Can I have multiple timer cards?
-Yes! You can add multiple cards for the same timer instance on different dashboards (or the same one). They will stay synchronized.
+  `slider_max`                                integer           `120`                     Максимальное значение
+                                                                                          ползунка
 
-### How to trigger a timer with automation?
-You can use the `simple_timer.start_timer` service in your automations or scripts.
+  `slider_unit`                               string            `min`                     Единица ползунка:
+                                                                                          `s`, `min`, `h`, `d`
 
-```yaml
+  `reverse_mode`                              boolean           `false`                   Отложенный запуск
+                                                                                          устройства
+
+  `hide_slider`                               boolean           `false`                   Полностью скрыть
+                                                                                          ползунок
+
+  `show_daily_usage`                          boolean           `true`                    Показывать статистику
+                                                                                          за день
+
+  `show_schedule`                             boolean           `false`                   Показывать панель
+                                                                                          расписания
+
+  `turn_off_on_cancel`                        boolean           `true`                    Выключать устройство
+                                                                                          при отмене
+
+  `slider_thumb_color`                        string            ---                       Цвет бегунка ползунка
+
+  `slider_background_color`                   string            ---                       Цвет дорожки ползунка
+
+  `timer_button_font_color`                   string            ---                       Цвет текста кнопок
+
+  `timer_button_background_color`             string            ---                       Фон кнопок таймера
+
+  `power_button_background_color`             string            ---                       Фон кнопки питания
+
+  `power_button_icon_color`                   string            ---                       Цвет иконки питания
+
+  `entity_state_icon`                         string            ---                       Иконка кнопки
+                                                                                          состояния
+
+  `entity_state_button_icon_color`            string            ---                       Цвет иконки состояния
+
+  `entity_state_button_icon_color_on`         string            ---                       Цвет иконки во
+                                                                                          включённом состоянии
+
+  `entity_state_button_background_color`      string            ---                       Фон кнопки состояния
+
+  `entity_state_button_background_color_on`   string            ---                       Фон кнопки состояния
+                                                                                          во включённом
+                                                                                          состоянии
+  -------------------------------------------------------------------------------------------------------------
+
+## 🤖 Использование в автоматизациях
+
+Для запуска таймера используется действие `simple_timer.start_timer`.
+
+Пример:
+
+``` yaml
 triggers:
   - at: "10:00:00"
     trigger: time
+
 actions:
   - data:
-      entry_id: your_entry_id # Find this in the entity attributes (e.g.: 01KDQ6WPZDBB3EB89DX407GR6M)
+      entry_id: your_entry_id
       duration: 30
       unit: s
       reverse_mode: false
     action: simple_timer.start_timer
 ```
 
-### How to schedule a timer for a future time?
-Use the card's **Schedule Timer** panel, or the `simple_timer.schedule_timer` service:
+`entry_id` можно найти в атрибутах сущности соответствующего таймера.
 
-```yaml
+## 📅 Запуск по расписанию через автоматизацию
+
+Можно использовать действие `simple_timer.schedule_timer`:
+
+``` yaml
 action: simple_timer.schedule_timer
 data:
-  entry_id: your_entry_id      # or entity_id: sensor.your_timer_runtime_...
+  entry_id: your_entry_id
   start_time: "21:30:00"
   duration: 30
   unit: min
-  repeat: true                 # optional; daily/recurring
-  days: [mon, tue, wed, thu, fri]   # optional; empty = every day
+  repeat: true
+  days: [mon, tue, wed, thu, fri]
 ```
-Cancel an armed schedule with `simple_timer.cancel_schedule` (same `entry_id`/`entity_id`).
 
-### Can I control my A/C or Climate entity?
-Yes, directly. Select the climate entity when you add the integration instance,
-and pick the mode it should run in.
+Для отмены установленного расписания используется:
 
-**What "on" means.** A switch is on or off. A climate entity has no "on" - its
-state *is* its mode (`heat`, `cool`, `dry`, `fan_only`, `auto`, `heat_cool`, or
-`off`). So you choose one mode when you set the timer up, and that is what the
-timer applies. Turning off is always `off`.
+``` text
+simple_timer.cancel_schedule
+```
 
-**Any non-off mode counts as running.** The device is metered, and the card
-shows it as on, in every mode. That has three consequences worth knowing:
+## ❄️ Управление Climate
 
-- **Changing the mode during a timer does not cancel it.** Start a 2 hour timer
-  in `cool`, switch the unit to `heat` by hand, and the timer keeps running -
-  the device is still on, and that is what the timer is counting.
-- **Turning the device off does cancel it**, the same as with a switch.
-- **A unit that goes `unavailable` does not cancel it.** An entity that stopped
-  answering has not told us it is off, and losing a timer to a dropped Zigbee
-  message would be worse than waiting.
+Интеграция может напрямую управлять сущностями `climate`.
 
-**Starting a timer on a unit that is already running leaves its mode alone.**
-The configured mode is applied when the device is off. The one exception is a
-delayed start: when it fires, it applies the configured mode, because "turn it
-on at 21:30" has to mean something specific.
+При добавлении таймера выберите нужную сущность и HVAC-режим, который
+следует использовать при запуске.
 
-> **Upgrading with a cached card?** A browser holding an old card bundle shows a
-> climate timer as off and its power button may not work. Hard-refresh
-> (Ctrl+Shift+R) once.
+В отличие от обычного выключателя, состояние `climate` фактически
+является режимом работы, например:
 
-The old workaround - an `input_boolean` helper plus an automation - still works
-and is no longer needed. It is only worth keeping if your automation does more
-than turn the unit on and off, for example setting a target temperature.
+``` text
+heat
+cool
+dry
+fan_only
+auto
+heat_cool
+off
+```
 
-### Can I customize the timer buttons?
-Yes! You can configure values with explicit units. Example: `timer_buttons: [30, "45s", "1.5h", "1d"]`. 
+При завершении таймера устройство переводится в `off`.
 
-### Why does my usage show a warning message?
-This appears when HA was offline during a timer to indicate potential time sync issues.
+### Изменение режима во время таймера
 
-## 🚨 Troubleshooting
+Изменение HVAC-режима вручную во время активного таймера **не отменяет
+таймер**. Устройство по-прежнему считается работающим.
 
-### Card Not Appearing in Card Picker
+Ручное переключение устройства в `off` отменяет таймер.
 
-1. **Restart Home Assistant:** The card is installed during integration setup
-2. **Check integration logs:** Look for any errors during the card installation process
-3. **Verify automatic installation:** Check if `/config/www/simple-timer/timer-card.js` exists
-4. **Clear browser cache:** Hard refresh with Ctrl+F5 (Windows) or Cmd+Shift+R (Mac)
-5. **Check browser console:** Press F12 and look for JavaScript errors
+Состояние `unavailable` само по себе не отменяет таймер.
 
-### Timer Not Working
+Если устройство уже работает в момент запуска таймера, текущий режим
+сохраняется. Для отложенного запуска используется режим, выбранный в
+настройках интеграции.
 
-1. **Check device entity:** Ensure the controlled device exists and is accessible
-2. **Verify integration setup:** Go to Settings → Devices & Services → Simple Timer
-3. **Check logs:** Look for errors in Settings → System → Logs
-4. **Restart integration:** Remove and re-add the integration if needed
+## ❓ Частые вопросы
 
-### Daily Usage Not Tracking
+### Можно ли создать несколько таймеров?
 
-1. **Device state changes:** Timer only tracks when the device is actually ON
-2. **Manual control:** If you turn the device off manually, tracking stops (by design)
-3. **Midnight reset:** Usage resets at 00:00 each day automatically
+Да. Можно добавить несколько экземпляров интеграции для разных
+устройств.
 
-### Card Installation Issues
+### Продолжит ли таймер работать после перезапуска Home Assistant?
 
-If the automatic card installation fails:
-1. **Check file permissions:** Ensure Home Assistant can write to the `www` directory
-2. **Verify disk space:** Ensure sufficient space for file copying
-3. **Check integration logs:** Look for specific error messages
-4. **Manual fallback:** You can still manually copy the card file from the integration's `dist` folder
+Да. Активные таймеры восстанавливаются с учётом времени, которое Home
+Assistant находился офлайн.
 
-### Card Not Updating After Upgrade
+Расписания также сохраняются после перезапуска. Повторяющиеся расписания
+будут установлены заново.
 
-If you don't see new features (like the Default Timer option) after updating:
-1. **Clear browser cache:** Hard refresh with Ctrl+F5 (Windows) or Cmd+Shift+R (Mac)
-2. **Reload Resources:** Call the `simple_timer.reload_resources` service from Developer Tools → Services to force the frontend to load the latest version.
+### Можно ли создать несколько карточек одного таймера?
 
-## 📝 Getting Help
+Да. Один экземпляр таймера можно вывести на нескольких панелях или
+несколько раз на одной панели. Карточки будут синхронизированы.
 
-If you encounter issues:
+### Можно ли задавать кнопкам разные единицы измерения?
 
-1. **Check the [Issues](https://github.com/ArikShemesh/ha-simple-timer/issues)** page for existing solutions
-2. **Enable debug logging:**
-   ```yaml
-   logger:
-     logs:
-       custom_components.simple_timer: debug
-   ```
-3. **Create a new issue** with:
-   - Home Assistant version
-   - Integration version
-   - Detailed error description
-   - Relevant log entries
+Да. Например:
 
-## 🤝 Contributing
+``` yaml
+timer_buttons:
+  - 30
+  - 45s
+  - 1.5h
+  - 1d
+```
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### Почему отображается предупреждение возле времени использования?
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+Оно может появиться, если Home Assistant был выключен во время работы
+таймера. Предупреждение сообщает о возможной неточности синхронизации
+времени.
 
-## 📄 License
+## 🚨 Решение проблем
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Карточка отсутствует в списке карточек
 
-## ⭐ Support
+1.  Полностью перезапустите Home Assistant.
+2.  Проверьте журнал интеграции на наличие ошибок.
+3.  Убедитесь, что файл карточки был установлен.
+4.  Выполните жёсткое обновление страницы браузера: **Ctrl+F5** или
+    **Ctrl+Shift+R**.
+5.  Откройте инструменты разработчика браузера клавишей **F12** и
+    проверьте ошибки JavaScript.
 
-If you find this integration useful, please consider:
-- ⭐ **Starring this repository**
-- 🐛 **Reporting bugs** you encounter
-- 💡 **Suggesting new features**
-- 📖 **Improving documentation**
+Автоматически зарегистрированный ресурс обычно выглядит примерно так:
 
----
+``` text
+/simple_timer/timer-card.js?v=...
+```
 
-## Star History
+Если при ручном добавлении:
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ArikShemesh/ha-simple-timer&type=date&theme=dark)](https://star-history.com/#ArikShemesh/ha-simple-timer&type=date)
+``` yaml
+type: custom:timer-card
+```
 
-**Made with ❤️ for the Home Assistant community**
+Home Assistant сообщает:
+
+``` text
+Custom element doesn't exist: timer-card
+```
+
+проверьте загрузку JavaScript-ресурса и консоль браузера.
+
+### Таймер не работает
+
+1.  Убедитесь, что управляемая сущность существует и доступна.
+2.  Проверьте **Настройки → Устройства и службы → Simple Timer**.
+3.  Проверьте **Настройки → Система → Журналы**.
+4.  При необходимости удалите экземпляр интеграции и добавьте его
+    заново.
+
+### Не учитывается время работы
+
+1.  Время учитывается только тогда, когда устройство действительно
+    включено.
+2.  При ручном выключении устройства учёт останавливается.
+3.  В 00:00 ежедневная статистика автоматически сбрасывается.
+
+### Проблемы с установкой карточки
+
+Если автоматическая установка карточки завершилась ошибкой:
+
+1.  Проверьте права Home Assistant на запись.
+2.  Проверьте наличие свободного места.
+3.  Посмотрите журнал `custom_components.simple_timer`.
+4.  При необходимости скопируйте собранный файл карточки из каталога
+    `dist` вручную.
+
+### Карточка не обновилась после установки новой версии
+
+1.  Выполните жёсткое обновление страницы: **Ctrl+F5** /
+    **Ctrl+Shift+R**.
+2.  В инструментах разработчика Home Assistant вызовите действие:
+
+``` text
+simple_timer.reload_resources
+```
+
+Это заставит frontend загрузить актуальную версию ресурса.
+
+## 📝 Отладка
+
+Для подробного журнала можно добавить в `configuration.yaml`:
+
+``` yaml
+logger:
+  logs:
+    custom_components.simple_timer: debug
+```
+
+После изменения конфигурации перезапустите Home Assistant.
+
+При создании Issue желательно указать:
+
+-   версию Home Assistant;
+-   версию Simple Timer;
+-   подробное описание проблемы;
+-   необходимые шаги для воспроизведения;
+-   соответствующие строки журнала.
+
+## 🤝 Участие в разработке
+
+Исправления и улучшения приветствуются.
+
+Для изменений в русской версии используйте репозиторий:
+
+[ProshkinM/ha-simple-timer-ru](https://github.com/ProshkinM/ha-simple-timer-ru)
+
+Оригинальный проект:
+
+[ArikShemesh/ha-simple-timer](https://github.com/ArikShemesh/ha-simple-timer)
+
+При полезных изменениях, которые относятся не только к русской
+локализации, имеет смысл также предложить их в оригинальный проект.
+
+## 🙏 Благодарности
+
+Оригинальная интеграция **HA Simple Timer** разработана **ArikShemesh**.
+
+Русская версия основана на оригинальном проекте и сохраняет его основную
+архитектуру и функциональность. Спасибо автору и участникам проекта за
+разработку Simple Timer для сообщества Home Assistant.
+
+## 📄 Лицензия
+
+Проект распространяется по лицензии **MIT**. Подробности находятся в
+файле [LICENSE](LICENSE).
+
+При распространении форка сохраняйте исходные уведомления об авторских
+правах и условия лицензии.
+
+## ⭐ Поддержка проекта
+
+Если русская версия оказалась полезной:
+
+-   ⭐ поставьте звезду этому репозиторию;
+-   🐛 сообщайте об обнаруженных ошибках;
+-   💡 предлагайте улучшения;
+-   📖 помогайте улучшать документацию;
+-   ⭐ поддержите также [оригинальный
+    проект](https://github.com/ArikShemesh/ha-simple-timer).
+
+------------------------------------------------------------------------
+
+**Русская локализация HA Simple Timer для сообщества Home Assistant ❤️**
