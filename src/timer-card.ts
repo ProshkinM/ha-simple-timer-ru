@@ -1273,7 +1273,7 @@ class TimerCard extends LitElement {
           <div class="slider-row">
             <input type="range" min="0" step="1" max="${this._config?.slider_max || 120}" value="10" class="timer-slider" />
             <div class="slider-right-group">
-              <span class="slider-label">10 ${this._config?.slider_unit || 'min'}</span>
+              <span class="slider-label">10 ${localizeUnit(this.hass, this._config?.slider_unit || 'min')}</span>
               <div class="timer-control-button">
                 <ha-icon icon="mdi:play"></ha-icon>
               </div>
@@ -1503,7 +1503,7 @@ class TimerCard extends LitElement {
             />
             
             <div class="slider-right-group">
-                <span class="slider-label">${this._sliderValue} ${this._config?.slider_unit || 'min'}</span>
+                <span class="slider-label">${this._sliderValue} ${localizeUnit(this.hass, this._config?.slider_unit || 'min')}</span>
                 
                 <div class="timer-control-button ${isTimerActive ? 'active' : ''} ${!isTimerActive && this._sliderValue === 0 ? 'disabled' : ''}" 
                      @click=${!isTimerActive && this._sliderValue === 0 ? null : this._handleTimerControl}

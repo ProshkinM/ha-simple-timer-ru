@@ -732,7 +732,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
           <div class="slider-row">
             <input type="range" min="0" step="1" max="${(null===(n=this._config)||void 0===n?void 0:n.slider_max)||120}" value="10" class="timer-slider" />
             <div class="slider-right-group">
-              <span class="slider-label">10 ${(null===(r=this._config)||void 0===r?void 0:r.slider_unit)||"min"}</span>
+              <span class="slider-label">10 ${"min"===((null===(r=this._config)||void 0===r?void 0:r.slider_unit)||"min")?"мин":"s"===((null===(r=this._config)||void 0===r?void 0:r.slider_unit)||"min")?"с":"h"===((null===(r=this._config)||void 0===r?void 0:r.slider_unit)||"min")?"ч":"d"===((null===(r=this._config)||void 0===r?void 0:r.slider_unit)||"min")?"д":((null===(r=this._config)||void 0===r?void 0:r.slider_unit)||"min")}</span>
               <div class="timer-control-button">
                 <ha-icon icon="mdi:play"></ha-icon>
               </div>
@@ -841,7 +841,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
             />
             
             <div class="slider-right-group">
-                <span class="slider-label">${this._sliderValue} ${(null===(d=this._config)||void 0===d?void 0:d.slider_unit)||"min"}</span>
+                <span class="slider-label">${this._sliderValue} ${"min"===((null===(d=this._config)||void 0===d?void 0:d.slider_unit)||"min")?"мин":"s"===((null===(d=this._config)||void 0===d?void 0:d.slider_unit)||"min")?"с":"h"===((null===(d=this._config)||void 0===d?void 0:d.slider_unit)||"min")?"ч":"d"===((null===(d=this._config)||void 0===d?void 0:d.slider_unit)||"min")?"д":((null===(d=this._config)||void 0===d?void 0:d.slider_unit)||"min")}</span>
                 
                 <div class="timer-control-button ${b?"active":""} ${b||0!==this._sliderValue?"":"disabled"}" 
                      @click=${b||0!==this._sliderValue?this._handleTimerControl:null}
