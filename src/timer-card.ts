@@ -485,7 +485,7 @@ class TimerCard extends LitElement {
 
     const duration = Number(this._scheduleDuration);
     if (!this._scheduleTime || !(duration > 0)) {
-      this._validationMessages = ["Set a start time and a run-for duration above 0."];
+      this._validationMessages = [t(this.hass, "durationGreaterZero")];
       return;
     }
 

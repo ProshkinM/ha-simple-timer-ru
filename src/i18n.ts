@@ -114,7 +114,7 @@ const RU: Record<TranslationKey, string> = {
   sensorNotFound: "Настроенный сенсор таймера «{sensor}» не найден. Выберите корректный экземпляр в редакторе карточки.",
   sensorInvalid: "Настроенный сенсор таймера «{sensor}» некорректен или связанное устройство «{device}» отсутствует. Выберите корректный экземпляр.",
   scheduleTimer: "Расписание таймера",
-  startsRuns: "Запуск {start} · длительность {duration} {unit}",
+  startsRuns: "Запуск {start} · на {duration} {unit}",
   repeatsDaily: "Повторять ежедневно",
   repeatsDays: "Повторять: {days}",
   oneShot: "Однократно",
