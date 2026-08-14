@@ -6,7 +6,7 @@
 > интеграции, карточки и визуального редактора.
 
 ![Simple
-Timer](https://github.com/ProshkinM/ha-simple-timer/blob/main/custom_components/simple_timer/brands/simple_timer/logo.png)
+Timer](https://github.com/ProshkinM/ha-simple-timer-ru/blob/main/custom_components/simple_timer/brands/simple_timer/logo.png)
 
 [![GitHub
 Release](https://img.shields.io/github/v/release/ProshkinM/ha-simple-timer-ru)](https://github.com/ProshkinM/ha-simple-timer-ru/releases)
