@@ -1537,7 +1537,7 @@ class TimerCard extends LitElement {
           }
         }}>
                   <div class="timer-button-value">${isTimerActive ? '+' : ''}${button.displayValue}</div>
-                  <div class="timer-button-unit">${button.labelUnit}</div>
+                  <div class="timer-button-unit">${localizeUnit(this.hass, button.labelUnit)}</div>
                 </div>
               `;
     })}
@@ -1713,7 +1713,7 @@ class TimerCard extends LitElement {
               ${this.buttons.filter(b => !b.isDefault).map(b => html`
                 <div class="sched-pill ${this._scheduleDuration === b.displayValue && this._scheduleUnit === b.unit ? 'selected' : ''}"
                   @click=${() => { this._scheduleDuration = b.displayValue; this._scheduleUnit = b.unit; this._persistSchedule(); }}>
-                  ${b.displayValue} ${b.labelUnit}
+                  ${b.displayValue} ${localizeUnit(this.hass, b.labelUnit)}
                 </div>
               `)}
             </div>

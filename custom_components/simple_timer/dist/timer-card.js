@@ -861,7 +861,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
                 <div class="timer-button ${e?"active":""}" 
                      @click=${()=>{b?this._addTimer(t.displayValue,t.unit):this._startTimer(t.displayValue,t.unit,"button")}}>
                   <div class="timer-button-value">${b?"+":""}${t.displayValue}</div>
-                  <div class="timer-button-unit">${t.labelUnit}</div>
+                  <div class="timer-button-unit">${"min"===t.labelUnit?"мин":"sec"===t.labelUnit?"с":"hr"===t.labelUnit?"ч":"day"===t.labelUnit?"д":t.labelUnit}</div>
                 </div>
               `})}
             
@@ -937,7 +937,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
               ${this.buttons.filter(t=>!t.isDefault).map(t=>H`
                 <div class="sched-pill ${this._scheduleDuration===t.displayValue&&this._scheduleUnit===t.unit?"selected":""}"
                   @click=${()=>{this._scheduleDuration=t.displayValue,this._scheduleUnit=t.unit,this._persistSchedule()}}>
-                  ${t.displayValue} ${t.labelUnit}
+                  ${t.displayValue} ${"min"===t.labelUnit?"мин":"sec"===t.labelUnit?"с":"hr"===t.labelUnit?"ч":"day"===t.labelUnit?"д":t.labelUnit}
                 </div>
               `)}
             </div>
@@ -961,7 +961,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
         `:""}
 
         <div class="sched-actions">
-          <div class="sched-btn ghost" @click=${()=>{this._scheduleExpanded=!1}}>Cancel</div>
+          <div class="sched-btn ghost" @click=${()=>{this._scheduleExpanded=!1}}>Отмена</div>
           <div class="sched-btn primary" @click=${this._setSchedule}>Установить</div>
         </div>
       </div>
