@@ -895,7 +895,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
         <div class="schedule-banner">
           <ha-icon class="sched-ico" icon="mdi:clock-outline"></ha-icon>
           <div class="sched-banner-text">
-            <div class="sched-banner-main">Starts ${e} · runs ${o} ${s}</div>
+            <div class="sched-banner-main">Запуск ${e} · на ${o} ${"min"===s?"мин":"s"===s||"sec"===s?"с":"h"===s||"hr"===s?"ч":"d"===s||"day"===s?"д":s}</div>
             <div class="sched-banner-sub">${c}</div>
           </div>
           <div class="sched-banner-x" @click=${this._cancelSchedule} title="Отменить расписание">
