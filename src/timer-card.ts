@@ -1284,7 +1284,7 @@ class TimerCard extends LitElement {
           ${previewButtons.map(m => html`
             <div class="timer-button">
               <div class="timer-button-value">${m}</div>
-              <div class="timer-button-unit">min</div>
+              <div class="timer-button-unit">${t(this.hass, "minShort")}</div>
             </div>
           `)}
         </div>

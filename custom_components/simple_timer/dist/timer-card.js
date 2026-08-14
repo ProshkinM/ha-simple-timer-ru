@@ -743,7 +743,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
           ${[15,30,60,90,120].map(t=>H`
             <div class="timer-button">
               <div class="timer-button-value">${t}</div>
-              <div class="timer-button-unit">min</div>
+              <div class="timer-button-unit">мин</div>
             </div>
           `)}
         </div>
@@ -891,7 +891,7 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
           </div>
         `:""}
       </ha-card>
-    `}_formatScheduleClock(t){var e;try{const i=new Date(t),o=null===(e=this.hass)||void 0===e?void 0:e.locale,s=(null==o?void 0:o.language)||[];let n;return"12"===(null==o?void 0:o.time_format)?n=!0:"24"===(null==o?void 0:o.time_format)&&(n=!1),i.toLocaleString(s,Object.assign({month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"},void 0===n?{}:{hour12:n}))}catch(e){return t}}_orderDaysByLocale(){var t,e,i,o;const s={mon:{key:"mon",label:"M"},tue:{key:"tue",label:"T"},wed:{key:"wed",label:"W"},thu:{key:"thu",label:"T"},fri:{key:"fri",label:"F"},sat:{key:"sat",label:"S"},sun:{key:"sun",label:"S"}},n=["mon","tue","wed","thu","fri","sat","sun"];let r="mon";const a=null===(e=null===(t=this.hass)||void 0===t?void 0:t.locale)||void 0===e?void 0:e.first_weekday,l={monday:"mon",tuesday:"tue",wednesday:"wed",thursday:"thu",friday:"fri",saturday:"sat",sunday:"sun"};if(a&&l[a])r=l[a];else try{const t=null===(o=null===(i=this.hass)||void 0===i?void 0:i.locale)||void 0===o?void 0:o.language,e=new Intl.Locale(t),s=e.weekInfo||e.getWeekInfo&&e.getWeekInfo(),a=null==s?void 0:s.firstDay;a&&(r=n[(a-1)%7])}catch(t){}const c=n.indexOf(r);return[...n.slice(c),...n.slice(0,c)].map(t=>s[t])}_renderSchedulePanel(t){var e;const i=this._orderDaysByLocale();if("armed"===(null===(e=null==t?void 0:t.attributes)||void 0===e?void 0:e.schedule_state)&&t.attributes.scheduled_start){const e=this._formatScheduleClock(t.attributes.scheduled_start),o=t.attributes.scheduled_duration,s=t.attributes.scheduled_unit||"min",n=t.attributes.schedule_repeat,r=t.attributes.schedule_days||[],a={mon:0,tue:1,wed:2,thu:3,fri:4,sat:5,sun:6},l={0:"Mon",1:"Tue",2:"Wed",3:"Thu",4:"Fri",5:"Sat",6:"Sun"};let c="";if(n)if(0===r.length||7===r.length)c="Повтор ежедневно";else{const t=i.map(t=>a[t.key]).filter(t=>r.includes(t)).map(t=>l[t]);c=`Repeats ${t.join(", ")}`}else c="Однократно";return H`
+    `}_formatScheduleClock(t){var e;try{const i=new Date(t),o=null===(e=this.hass)||void 0===e?void 0:e.locale,s=(null==o?void 0:o.language)||[];let n;return"12"===(null==o?void 0:o.time_format)?n=!0:"24"===(null==o?void 0:o.time_format)&&(n=!1),i.toLocaleString(s,Object.assign({month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"},void 0===n?{}:{hour12:n}))}catch(e){return t}}_orderDaysByLocale(){var t,e,i,o;const s={mon:{key:"mon",label:"Пн"},tue:{key:"tue",label:"Вт"},wed:{key:"wed",label:"Ср"},thu:{key:"thu",label:"Чт"},fri:{key:"fri",label:"Пт"},sat:{key:"sat",label:"Сб"},sun:{key:"sun",label:"Вс"}},n=["mon","tue","wed","thu","fri","sat","sun"];let r="mon";const a=null===(e=null===(t=this.hass)||void 0===t?void 0:t.locale)||void 0===e?void 0:e.first_weekday,l={monday:"mon",tuesday:"tue",wednesday:"wed",thursday:"thu",friday:"fri",saturday:"sat",sunday:"sun"};if(a&&l[a])r=l[a];else try{const t=null===(o=null===(i=this.hass)||void 0===i?void 0:i.locale)||void 0===o?void 0:o.language,e=new Intl.Locale(t),s=e.weekInfo||e.getWeekInfo&&e.getWeekInfo(),a=null==s?void 0:s.firstDay;a&&(r=n[(a-1)%7])}catch(t){}const c=n.indexOf(r);return[...n.slice(c),...n.slice(0,c)].map(t=>s[t])}_renderSchedulePanel(t){var e;const i=this._orderDaysByLocale();if("armed"===(null===(e=null==t?void 0:t.attributes)||void 0===e?void 0:e.schedule_state)&&t.attributes.scheduled_start){const e=this._formatScheduleClock(t.attributes.scheduled_start),o=t.attributes.scheduled_duration,s=t.attributes.scheduled_unit||"min",n=t.attributes.schedule_repeat,r=t.attributes.schedule_days||[],a={mon:0,tue:1,wed:2,thu:3,fri:4,sat:5,sun:6},l={0:"Пн",1:"Вт",2:"Ср",3:"Чт",4:"Пт",5:"Сб",6:"Вс"};let c="";if(n)if(0===r.length||7===r.length)c="Повторять ежедневно";else{const t=i.map(t=>a[t.key]).filter(t=>r.includes(t)).map(t=>l[t]);c=`Повторять: ${t.join(", ")}`}else c="Однократно";return H`
         <div class="schedule-banner">
           <ha-icon class="sched-ico" icon="mdi:clock-outline"></ha-icon>
           <div class="sched-banner-text">
@@ -926,9 +926,9 @@ const w=globalThis,$=t=>t,S=w.trustedTypes,C=S?S.createPolicy("lit-html",{create
             <select class="sched-unit"
               .value=${this._scheduleUnit}
               @change=${t=>{this._scheduleUnit=t.target.value,this._persistSchedule()}}>
-              <option value="s">sec</option>
-              <option value="min">min</option>
-              <option value="h">hr</option>
+              <option value="s">с</option>
+              <option value="min">мин</option>
+              <option value="h">ч</option>
             </select>
           </div>
           ${this.buttons.filter(t=>!t.isDefault).length>0?H`
